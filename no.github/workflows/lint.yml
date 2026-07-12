@@ -48,4 +48,4 @@ jobs:
       #     commit_options: '--no-verify'
       #     file_pattern: |
       #       **/*
-      #       !.github/workflows/*
+      #       !no.github/workflows/*

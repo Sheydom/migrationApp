@@ -12,20 +12,27 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('clients', function (Blueprint $table) {
+//personal information
             $table->id();
-            $table->timestamps();
             $table->string('first_name');
             $table->string('last_name');
-            $table->string('age');
-            $table->string('gender');
-            $table->string('email');
-            $table->date('birth_date');
+            $table->date('birth_date')->nullable();
+            $table->string('gender')->nullable();
+            $table->string('occupation')->nullable();
             $table->string('nationality');
+            $table->string('passport_number')->nullable();
+            $table->string('country_of_residence')->nullable();
+//contact
+            $table->string('phone')->nullable();
+            $table->string('email')->unique();
+//Visa
             $table->string('current_visa')->nullable();
             $table->date('expire_date')->nullable();
+//Internal
             $table->string('status')->default('new');
-            $table->string('notes')->nullable();
+            $table->text('notes')->nullable();
             $table->string('folder_path')->nullable();
+            $table->timestamps();
         });
     }
 
