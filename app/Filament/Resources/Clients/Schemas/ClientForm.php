@@ -37,7 +37,7 @@ class ClientForm
                     ->default('new'),
                 Textarea::make('notes')
                     ->columnSpanFull(),
-                TextInput::make('folder_path'),
+                TextInput::make('folder_path')->disabled(),
             ]);
     }
 }
