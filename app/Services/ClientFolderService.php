@@ -27,7 +27,7 @@ class ClientFolderService
         try {
             $folderName = "{$client->id}-" . Str::slug($client->first_name . ' ' . $client->last_name);
             $path = "clientsLMA/{$folderName}";
-            
+
             // create main client folder
             Storage::disk('client_files')->makeDirectory($path);
             // create sub folders
@@ -37,6 +37,18 @@ class ClientFolderService
 
             return $path;
 
+        } catch (\Throwable $e) {
+            dd($e->getMessage());
+        }
+    }
+
+    public function delete(Client $client): void
+    {
+        try {
+            if (!$client->folder_path) {
+                return;
+            }
+            Storage::disk('client_files')->deleteDirectory("$client->folder_path");
         } catch (\Throwable $e) {
             dd($e->getMessage());
         }

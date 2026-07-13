@@ -27,7 +27,7 @@ class ClientObserver
      */
     public function updated(Client $client): void
     {
-        //
+
     }
 
     /**
@@ -35,7 +35,7 @@ class ClientObserver
      */
     public function deleted(Client $client): void
     {
-        //
+        $this->clientFolderService->delete($client);
     }
 
     /**
