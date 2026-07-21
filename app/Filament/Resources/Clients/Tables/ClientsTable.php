@@ -7,6 +7,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Table;
 use App\Models\Client;
 
@@ -15,10 +16,24 @@ class ClientsTable
     public static function configure(Table $table): Table
     {
         return $table->recordUrl(fn(Client $record): string => ClientResource::getUrl('edit', ['record' => $record, 'relation' => 'checklist']))
-            ->columns([
+            ->modifyQueryUsing(function (Builder $query): Builder {
+                return $query->withCount(['checklistItems as total_tasks', 'checklistItems as completed_tasks' => function (Builder $query) {
+                    $query->where('is_completed', true);
+                },]);
+            })->columns([
                 TextColumn::make('status')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('completed_tasks')
+                    ->label('Checklist')->formatStateUsing(function ($state, $record): string {
+                        if ($record->total_tasks === 0) {
+                            return 'No checklist';
+                        }
+                        if ($record->remaining_tasks === 0) {
+                            return 'Complete';
+                        }
+                        return "{$record->completed_tasks} / {$record->total_tasks} ";
+                    })->sortable(),
                 TextColumn::make('first_name')
                     ->searchable()
                     ->sortable(),
