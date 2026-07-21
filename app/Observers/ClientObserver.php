@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Models\Client;
 use App\Services\ClientFolderService;
+use App\Services\ClientChecklistService;
 
 
 class ClientObserver
@@ -11,7 +12,8 @@ class ClientObserver
     /**
      * Handle the Client "created" event.
      */
-    public function __construct(private readonly ClientFolderService $clientFolderService)
+    public function __construct(private readonly ClientFolderService    $clientFolderService,
+                                private readonly ClientChecklistService $clientChecklistService,)
     {
     }
 
@@ -20,6 +22,7 @@ class ClientObserver
 
         $folderPath = $this->clientFolderService->create($client);
         $client->updateQuietly(['folder_path' => $folderPath,]);
+        $this->clientChecklistService->createFor($client);
     }
 
     /**
