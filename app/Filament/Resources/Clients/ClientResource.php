@@ -36,7 +36,7 @@ class ClientResource extends Resource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\ChecklistItemsRelationManager::class,
+            'checklist' => RelationManagers\ChecklistItemsRelationManager::class,
         ];
     }
 

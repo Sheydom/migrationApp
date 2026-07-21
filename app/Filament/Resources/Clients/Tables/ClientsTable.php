@@ -2,17 +2,19 @@
 
 namespace App\Filament\Resources\Clients\Tables;
 
+use App\Filament\Resources\Clients\ClientResource;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use App\Models\Client;
 
 class ClientsTable
 {
     public static function configure(Table $table): Table
     {
-        return $table
+        return $table->recordUrl(fn(Client $record): string => ClientResource::getUrl('edit', ['record' => $record, 'relation' => 'checklist']))
             ->columns([
                 TextColumn::make('status')
                     ->searchable()

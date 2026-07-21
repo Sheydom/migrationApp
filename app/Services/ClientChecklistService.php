@@ -8,7 +8,7 @@ use App\Models\Client;
 class ClientChecklistService
 {
     private const array DEFAULT_ITEMS = [
-        'Initial consultation completed',
+        'Initial consultation',
         'Client agreement signed',
         'Identity documents received',
         'Passport received',
