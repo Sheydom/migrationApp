@@ -38,7 +38,7 @@ class ChecklistItemsRelationManager extends RelationManager
 
                 TextInput::make('title')
                     ->required()
-                    ->maxLength(255)->disabled(),
+                    ->maxLength(255)->disabledOn('edit'),
 
                 Textarea::make('description')
                     ->rows(8)
