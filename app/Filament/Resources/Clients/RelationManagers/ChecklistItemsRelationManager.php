@@ -65,12 +65,12 @@ class ChecklistItemsRelationManager extends RelationManager
                             ->label('Completed at')
                             ->dehydrated(),
 
-                        TextInput::make('sort_order')
-                            ->label('Priority')
-                            ->required()
-                            ->numeric()
-                            ->minValue(0)
-                            ->default(0),
+//                        TextInput::make('sort_order')
+//                            ->label('Priority')
+//                            ->required()
+//                            ->numeric()
+//                            ->minValue(0)
+//                            ->default(0),
                     ]),
 
             ]);
