@@ -81,21 +81,20 @@ class ChecklistItemsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('title')
             ->columns([
+//                TextColumn::make('sort_order')->width('20px')
+//                    ->label('Priority')
+//                    ->numeric()
+//                    ->sortable(),
+                IconColumn::make('is_completed')->width('20px')
+                    ->label('Completed')
+                    ->boolean()
+                    ->sortable(),
                 TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
 
-                IconColumn::make('is_completed')
-                    ->label('Completed')
-                    ->boolean()
-                    ->sortable(),
 
-                TextColumn::make('sort_order')
-                    ->label('Priority')
-                    ->numeric()
-                    ->sortable(),
-
-                TextColumn::make('completed_at')
+                TextColumn::make('completed_at')->width('120px')
                     ->label('Completed at')
                     ->dateTime()
                     ->placeholder('Not completed')

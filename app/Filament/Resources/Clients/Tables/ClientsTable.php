@@ -34,6 +34,9 @@ class ClientsTable
                         }
                         return "{$record->completed_tasks} / {$record->total_tasks} ";
                     })->sortable(),
+                TextColumn::make('current_visa')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('first_name')
                     ->searchable()
                     ->sortable(),
@@ -63,9 +66,7 @@ class ClientsTable
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
-                TextColumn::make('current_visa')
-                    ->searchable()
-                    ->sortable(),
+
                 TextColumn::make('expire_date')
                     ->searchable()
                     ->sortable(),
