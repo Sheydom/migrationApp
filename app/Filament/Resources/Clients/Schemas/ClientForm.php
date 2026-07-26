@@ -29,7 +29,7 @@ class ClientForm
                 TextInput::make('email')
                     ->label('Email address')
                     ->email()
-                    ->required(),
+                    ->required()->unique(ignoreRecord: true)->validationMessages(['unique' => 'A client with this email address already exists.']),
                 TextInput::make('current_visa'),
                 DatePicker::make('expire_date'),
                 TextInput::make('status')

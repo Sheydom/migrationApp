@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ClientFolderService
 {
-    protected array $folders = [
+    private const array SUBFOLDERS = [
         'Visa',
         'Passport',
         'Police-Clearances',
@@ -22,20 +22,31 @@ class ClientFolderService
 
     ];
 
+    public function __construct(
+
+        private readonly NextcloudService $nextcloud,
+
+    )
+    {
+
+    }
+
     public function create(Client $client): string
     {
         try {
+            $rootFolder = trim(config('nextcloud.root_folder', 'Clients'));
             $folderName = "{$client->id}-" . Str::slug($client->first_name . ' ' . $client->last_name);
-            $path = "clientsLMA/{$folderName}";
+            $clientPath = "{$rootFolder}/{$folderName}";
 
             // create main client folder
-            Storage::disk('client_files')->makeDirectory($path);
+            $this->nextcloud->createDirectory($rootFolder);
+            $this->nextcloud->createDirectory($clientPath);
             // create sub folders
-            foreach ($this->folders as $folder) {
-                Storage::disk('client_files')->makeDirectory("$path/$folder");
+            foreach (self::SUBFOLDERS as $folder) {
+                $this->nextcloud->createDirectory("$clientPath/$folder");
             }
 
-            return $path;
+            return $clientPath;
 
         } catch (\Throwable $e) {
             dd($e->getMessage());
@@ -48,7 +59,7 @@ class ClientFolderService
             if (!$client->folder_path) {
                 return;
             }
-            Storage::disk('client_files')->deleteDirectory("$client->folder_path");
+            $this->nextcloud->deleteDirectory("$client->folder_path");
         } catch (\Throwable $e) {
             dd($e->getMessage());
         }
