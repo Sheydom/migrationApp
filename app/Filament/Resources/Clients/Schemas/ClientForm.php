@@ -6,6 +6,8 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Schemas\Schema;
+use Filament\Actions\Action;
+
 
 class ClientForm
 {
@@ -37,7 +39,21 @@ class ClientForm
                     ->default('new'),
                 Textarea::make('notes')
                     ->columnSpanFull(),
-                TextInput::make('folder_path')->disabled(),
+                TextInput::make('folder_path')
+                    ->disabled()
+                    ->suffixAction(
+                        Action::make('open')
+                            ->icon('heroicon-m-folder-open')
+                            ->url(fn($record) => 'https://cloud.dominic-knabe.com/apps/files/?dir=/' .
+
+                                urlencode($record->folder_path)
+
+                            )
+                            ->openUrlInNewTab()
+
+                    )
+
+
             ]);
     }
 }
