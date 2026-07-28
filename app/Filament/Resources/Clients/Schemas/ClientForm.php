@@ -44,9 +44,9 @@ class ClientForm
                     ->suffixAction(
                         Action::make('open')
                             ->icon('heroicon-m-folder-open')
-                            ->url(fn($record) => 'https://cloud.dominic-knabe.com/apps/files/?dir=/' .
+                            ->url(fn($record) => filled($record?->folder_path) ? 'https://cloud.dominic-knabe.com/apps/files/?dir=/' .
 
-                                urlencode($record->folder_path)
+                                urlencode($record->folder_path) : null
 
                             )
                             ->openUrlInNewTab()
