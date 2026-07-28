@@ -7,8 +7,8 @@ use App\Models\Client;
 
 class IntakeChart extends ChartWidget
 {
-    protected static ?int $sort = 2;
-    protected ?string $heading = 'Intake Chart';
+    protected static ?int $sort = 3;
+    protected ?string $heading = 'Monthly Client Intake';
     protected ?array $options = [
         'plugins' => [
             'legend' => [

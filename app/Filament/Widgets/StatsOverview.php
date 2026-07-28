@@ -27,8 +27,10 @@ class StatsOverview extends StatsOverviewWidget
         return [
             Stat::make('Clients', Client::query()->count())->description('Total Clients')->color('success'),
             Stat::make('Checklist', "$completed /
-        $notCompleted")->description('Process' . ' ' . $ratio . '%')->color($color),
+        $notCompleted")->description('Progress' . ' ' . $ratio . '%')->color($color),
             Stat::make('Nationalities', Client::query()->distinct()->count('nationality')),
+            Stat::make('Expiring Visas', Client::query()->whereDate('expire_date', '<=', now()->addDays(90))->count())->description('Within the next 3 months')->descriptionIcon('heroicon-s-bolt')->color('danger'),
+
 
         ];
     }
