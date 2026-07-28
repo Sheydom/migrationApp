@@ -51,7 +51,7 @@ class ClientForm
                             )
                             ->openUrlInNewTab()
 
-                    )
+                    )->visible(fn($record): bool => filled($record?->folder_path))
 
 
             ]);
