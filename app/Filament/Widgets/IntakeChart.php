@@ -8,14 +8,8 @@ use App\Models\Client;
 class IntakeChart extends ChartWidget
 {
     protected static ?int $sort = 3;
-    protected ?string $heading = 'Monthly Client Intake';
-    protected ?array $options = [
-        'plugins' => [
-            'legend' => [
-                'display' => false,
-            ]
-        ]
-    ];
+    protected ?string $heading = 'Client Intake';
+
 
     protected function getData(): array
     {
@@ -40,5 +34,29 @@ class IntakeChart extends ChartWidget
     protected function getType(): string
     {
         return 'bar';
+    }
+
+    protected function getOptions(): array
+    {
+        return [
+            'scales' => [
+                'y' => [
+                    'beginAtZero' => true,
+                    'ticks' => [
+                        'stepSize' => 1,
+                    ], 'title' => [
+                        'display' => 'true',
+                        'text' => 'Monthly Client Intake',
+                    ]
+                ],
+
+            ],
+
+            'plugins' => [
+                'legend' => [
+                    'display' => false,
+                ],
+            ],
+        ];
     }
 }
