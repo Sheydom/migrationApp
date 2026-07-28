@@ -45,6 +45,7 @@ class ClientFactory extends Factory
             ]),
 
             'expire_date' => fake()->dateTimeBetween('today', '+3 years'),
+            'created_at' => fake()->dateTimeBetween('-1 year', 'now'),
 
             'status' => fake()->randomElement([
 
