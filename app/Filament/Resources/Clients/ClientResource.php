@@ -32,8 +32,7 @@ class ClientResource extends Resource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'First Name' => $record->first_name,
-            'Last Name' => $record->last_name,
+            'Name' => $record->first_name . ' ' . $record->last_name,
             'Email' => $record->email,
             'Phone' => $record->phone,
         ];
