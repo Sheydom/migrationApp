@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Clients;
 
+use Illuminate\Database\Eloquent\Model;
 use App\Filament\Resources\Clients\Pages\CreateClient;
 use App\Filament\Resources\Clients\Pages\EditClient;
 use App\Filament\Resources\Clients\Pages\ListClients;
@@ -22,6 +23,22 @@ class ClientResource extends Resource
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
 
     protected static ?string $recordTitleAttribute = 'full_name';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['first_name', 'last_name', 'email', 'birth_date', 'gender', 'occupation', 'nationality', 'passport_number', 'birth_date', 'country_of_residence', 'phone', 'current_visa', 'expire_date', 'status', 'notes'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'First Name' => $record->first_name,
+            'Last Name' => $record->last_name,
+            'Email' => $record->email,
+            'Phone' => $record->phone,
+        ];
+    }
+
 
     public static function form(Schema $schema): Schema
     {
