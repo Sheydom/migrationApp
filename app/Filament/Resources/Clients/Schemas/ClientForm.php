@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Clients\Schemas;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Select;
 use Filament\Schemas\Schema;
 use Filament\Actions\Action;
 
@@ -34,9 +35,10 @@ class ClientForm
                     ->required()->unique(ignoreRecord: true)->validationMessages(['unique' => 'A client with this email address already exists.']),
                 TextInput::make('current_visa'),
                 DatePicker::make('expire_date'),
-                TextInput::make('status')
-                    ->required()
-                    ->default('new'),
+                Select::make('status')->options(['Draft' => 'Draft', 'Approved' => 'Approved', 'Rejected' => 'Rejected', 'Pending' => 'Pending', 'Granted' => 'Granted', 'New' => 'New', 'in Progress' => 'In progress'])->required()->default('new'),
+//                TextInput::make('status')
+//                    ->required()
+//                    ->default('new'),
                 Textarea::make('notes')
                     ->columnSpanFull(),
                 TextInput::make('folder_path')
