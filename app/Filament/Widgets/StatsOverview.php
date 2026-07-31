@@ -6,7 +6,8 @@ use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Client;
 use App\Models\ChecklistItem;
-use phpDocumentor\Reflection\PseudoTypes\FloatValue;
+use Illuminate\Support\Facades\URL;
+use Filament\Actions\Action;
 
 class StatsOverview extends StatsOverviewWidget
 {
@@ -30,7 +31,16 @@ class StatsOverview extends StatsOverviewWidget
         $notCompleted")->description('Progress' . ' ' . $ratio . '%')->color($color),
             Stat::make('Nationalities', Client::query()->distinct()->count('nationality')),
             Stat::make('Expiring Visas', Client::query()->whereDate('expire_date', '<=', now()->addDays(90))->count())->description('Within the next 3 months')->descriptionIcon('heroicon-s-bolt')->color('danger'),
-
+            Stat::make('Client registration', 'Open form')
+                ->description('Link valid for 1 minute')
+                ->descriptionIcon('heroicon-o-link')
+                ->url(
+                    fn(): string => URL::temporarySignedRoute(
+                        'client-register',
+                        now()->addMinute()
+                    ),
+                    shouldOpenInNewTab: true,
+                ),
 
         ];
     }
