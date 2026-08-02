@@ -189,8 +189,8 @@ new class extends Component {
                 </h3>
 
                 <p class="text-sm text-gray-600 mt-2">
-                    The information you provide will only be used by Solis
-                    Migration to assess your migration enquiry and communicate
+                    The information you provide will only be used by CompanyName to assess your migration enquiry and
+                    communicate
                     with you regarding your application.
                 </p>
             </div>
