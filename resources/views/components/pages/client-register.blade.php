@@ -2,6 +2,8 @@
 
 use App\Models\Client;
 use Livewire\Component;
+use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
 
 new class extends Component {
     public function render()
@@ -9,16 +11,28 @@ new class extends Component {
         return $this->view()->layout('layouts::client');
     }
 
+
     public string $first_name;
     public string $last_name;
     public string $email;
     public string $phone;
     public string $nationality;
     public string $email_confirmation;
+    public string $signedUrl;
 
+    public function mount(): void
+    {
+        $this->signedUrl = request()->fullUrl();
+    }
 
     public function save(): void
     {
+        $signedRequest = Request::create($this->signedUrl);
+        if (!URL::hasValidSignature($signedRequest)) {
+            abort(403, 'This registration link has expired or is invalid.');
+        }
+
+
         $validated = $this->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
