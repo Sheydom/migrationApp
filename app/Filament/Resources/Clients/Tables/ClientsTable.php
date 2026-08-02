@@ -43,6 +43,8 @@ class ClientsTable
                 TextColumn::make('last_name')
                     ->searchable()
                     ->sortable(),
+                TextColumn::make('folder_path')
+                    ->searchable()->icon('heroicon-m-folder-open')->iconColor('primary')->url(fn(Client $record): ?string => filled($record->folder_path) ? 'https://cloud.dominic-knabe.com/apps/files/?dir=/' . urlencode($record->folder_path) : null)->openUrlInNewTab(),
                 TextColumn::make('birth_date')
                     ->date()
                     ->sortable(),
@@ -70,8 +72,6 @@ class ClientsTable
                 TextColumn::make('expire_date')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('folder_path')
-                    ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
