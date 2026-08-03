@@ -2,9 +2,11 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class NextcloudService
 {
@@ -41,6 +43,22 @@ class NextcloudService
         $this->baseUrl = rtrim($webDavUrl, '/');
         $this->username = $username;
         $this->appPassword = $appPassword;
+    }
+
+    /**
+     * @throws ConnectionException
+     */
+    public function uploadFile(string $folderPath, TemporaryUploadedFile $file): void
+    {
+        $filename = $file->getClientOriginalName();
+        $remotePath = trim($folderPath, '/') . '/' . $filename;
+        $response = Http::withBasicAuth(config('services.nextcloud.username'), config('services.nextcloud.app_password'),)->timeout(120)->withBody(file_get_contents($file->getRealPath()),$file->getMimeType()?? 'application/octet-stream',)->put($this->buildUrl($remotePath));
+
+        if(!$response->successful()) {
+            throw new RuntimeException(
+                "Nextcloud upload failed with error {$response->body()}"
+            );
+        }
     }
 
     public function createDirectory(string $path): void
@@ -105,4 +123,6 @@ class NextcloudService
 
         return $this->baseUrl . '/' . $encodedPath;
     }
+
+
 }

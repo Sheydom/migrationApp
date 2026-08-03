@@ -4,14 +4,20 @@ use App\Models\Client;
 use Livewire\Component;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Http\Request;
+use Filament\Forms\Components\FileUpload;
+use App\Services\NextcloudService;
+use Livewire\WithFileUploads;
+
 
 new class extends Component {
+    use WithFileUploads;
+
     public function render()
     {
         return $this->view()->layout('layouts::client');
     }
 
-
+    public string $success = "";
     public string $first_name;
     public string $last_name;
     public string $email;
@@ -19,13 +25,16 @@ new class extends Component {
     public string $nationality;
     public string $email_confirmation;
     public string $signedUrl;
+    public $passport;
+    public $current_visa;
+    public $other_documents;
 
     public function mount(): void
     {
         $this->signedUrl = request()->fullUrl();
     }
 
-    public function save(): void
+    public function save(NextcloudService $nextcloud): void
     {
         $signedRequest = Request::create($this->signedUrl);
         if (!URL::hasValidSignature($signedRequest)) {
@@ -39,9 +48,32 @@ new class extends Component {
             'email' => 'required|email|unique:clients,email|confirmed',
             'phone' => 'required|string|max:30',
             'nationality' => 'required|string|max:50',
+            'passport' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
+            'current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
+            'other_documents' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
         ]);
 
-        Client::create($validated);
+        $client = Client::create(['first_name' => $validated['first_name'], 'last_name' => $validated['last_name'], 'email' => $validated['email'], 'nationality' => $validated['nationality']]);
+        $client->refresh();
+        try {
+            if ($this->passport) {
+                $nextcloud->uploadFile(folderPath: "{$client->folder_path}/Passport", file: $this->passport);
+            }
+            if ($this->current_visa) {
+                $nextcloud->uploadFile(folderPath: "{$client->folder_path}/Visa", file: $this->current_visa);
+            }
+            foreach ($this->other_documents as $document) {
+                $nextcloud->uploadFile(folderPath: "{$client->folder_path}", file: $document);
+            }
+        } catch (\Throwable $exception) {
+            Log::error('Client document upload failed', [
+                'client_id' => $client->id,
+                'message' => $exception->getMessage(),
+            ]);
+        }
+
+        $this->success = "Form successful submitted.";
+
 //        $this->redirect('pages/thank-you');
     }
 
@@ -52,7 +84,7 @@ new class extends Component {
     <div class="max-w-3xl mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
 
         <!-- Header -->
-        <div class="bg-gradient-to-r from-sky-900 to-cyan-700 px-8 py-10">
+        <div class="bg-linear-to-r from-sky-900 to-cyan-700 px-8 py-10">
             {{--            Solis Migration --}}
             <h1 class="text-4xl font-bold text-white">
                 Client intake Form
@@ -69,7 +101,7 @@ new class extends Component {
         </div>
 
         <!-- Form -->
-        <form wire:submit="save" class="p-8 space-y-6">
+        <form wire:submit="save" enctype="multipart/form-data" class="p-8 space-y-6">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -180,8 +212,22 @@ new class extends Component {
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+                <div class="flex flex-col cursor-pointer"><label class="cursor-pointer" for="passport">Passport</label>
+                    <input type="file" id="passport" wire:model="passport" accept=".pdf,.jpg,.jpeg,.png"
+                           class="inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg cursor-pointer hover:bg-cyan-800 transition">
+
+                    @error('passport') <p>{{$message}}</p> @enderror</div>
+                <div class="flex flex-col cursor-pointer"><label class="cursor-pointer" for="currentVisa">Current
+                        Visa</label>
+                    <input type="file" id="currentVisa" wire:model="current_visa"
+                           accept=".pdf,.jpg,.jpeg,.png"
+                           class=" inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg
+                           cursor-pointer hover:bg-cyan-800 transition">
+
+                    @error('current_visa') <p>{{$message}}</p> @enderror</div>
 
             </div>
+
 
             <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-5">
                 <h3 class="font-semibold text-cyan-800">
@@ -195,8 +241,13 @@ new class extends Component {
                 </p>
             </div>
 
-            <div class="flex justify-end pt-2">
 
+            <div class="flex justify-between pt-2 w-full">
+                <div class="flex-start">
+                    @if($success)
+                        <p class="text-green-300 text-2xl">{{$success}}</p>
+                    @endif
+                </div>
                 <button
                     type="submit"
                     wire:loading.attr="disabled"
@@ -210,9 +261,11 @@ new class extends Component {
                         Submitting...
                     </span>
 
+
                 </button>
 
             </div>
+
 
         </form>
 

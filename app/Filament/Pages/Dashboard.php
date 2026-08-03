@@ -19,7 +19,7 @@ class Dashboard extends BaseDashboard
                 ->action(function (): void {
                     $url = URL::temporarySignedRoute(
                         'client-register',
-                        now()->addMinute(),
+                        now()->addWeek(),
                     );
 
                     Notification::make()
