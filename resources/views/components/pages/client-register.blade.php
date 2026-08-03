@@ -242,10 +242,10 @@ new class extends Component {
             </div>
 
 
-            <div class="flex justify-between pt-2 w-full">
+            <div class="flex justify-between items-center pt-2 w-full">
                 <div class="flex-start">
                     @if($success)
-                        <p class="text-green-300 text-2xl">{{$success}}</p>
+                        <p class="text-green-500 text-2xl">{{$success}}</p>
                     @endif
                 </div>
                 <button
