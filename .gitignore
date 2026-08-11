@@ -22,3 +22,20 @@ yarn-error.log
 /.nova
 /.vscode
 /.zed
+
+# Python virtual environment
+app/Python/.venv/
+
+# Python cache
+app/Python/__pycache__/
+app/Python/**/*.pyc
+
+# OCR temporary files
+app/Python/passport.png
+app/Python/passport_data.json
+
+# Generated output
+app/Python/output/
+
+# macOS
+app/Python/.DS_Store

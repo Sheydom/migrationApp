@@ -4,6 +4,8 @@ import json
 from ollama import chat
 import time
 from pathlib import Path
+
+
 total = time.perf_counter()
 start = time.perf_counter()
 pages = convert_from_path(
@@ -30,6 +32,15 @@ ocr = PaddleOCR(
 
 results = ocr.predict("passport.png")
 # print(f"PaddleOCR: {time.perf_counter() - start:.2f}s")
+
+base = Path(__file__).resolve().parent
+
+for result in results:
+    result.save_to_img(f"{base}/output")
+
+
+# for result in results:
+#     result.save_to_img("/Users/dominicknabe/Documents/vscode/migrationApp/app/Python/output")
 
     # shows detected data
     # for result in results:
