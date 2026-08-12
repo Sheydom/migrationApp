@@ -23,7 +23,15 @@ class ClientsTable
             })->columns([
                 TextColumn::make('status')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()->color(fn(?string $state): string => match ($state) {
+                        'Review AI' => 'warning',
+                        'Refused' => 'danger',
+                        'Granted' => 'success',
+                        'Pending' => 'secondary',
+                        'New' => 'info',
+                        'In Progress' => 'primary',
+                        default => 'gray',
+                    }),
                 TextColumn::make('completed_tasks')
                     ->label('Checklist')->formatStateUsing(function ($state, $record): string {
                         if ($record->total_tasks === 0) {

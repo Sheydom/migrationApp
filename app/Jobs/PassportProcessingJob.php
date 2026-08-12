@@ -6,6 +6,8 @@ use App\Models\Client;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Process;
+use Illuminate\Support\Facades\Log;
+use Exception;
 
 class PassportProcessingJob implements ShouldQueue
 {
@@ -21,14 +23,25 @@ class PassportProcessingJob implements ShouldQueue
 
     /**
      * Execute the job.
+     * @throws \Throwable
      */
     public function handle(): void
     {
 
-        set_time_limit(120);
-        $script = base_path('app/Python/main.py');
-        $python = base_path('app/Python/.venv/bin/python');
-        $result = Process::timeout(120)->run([$python, $script, $this->fullPath]);
+        try {
+            set_time_limit(120);
+            $script = base_path('app/Python/main.py');
+            $python = base_path('app/Python/.venv/bin/python');
+            $result = Process::timeout(120)->run([$python, $script, $this->fullPath]);
+
+            if ($result->failed()) {
+                throw new Exception($result->errorOutput());
+            }
+
+        } catch (\Throwable $e) {
+            Log::error($e->getMessage());
+            throw $e;
+        }
 
 
         //    $output = $result->output();

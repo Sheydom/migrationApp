@@ -4,12 +4,19 @@ namespace App\Filament\Widgets;
 
 use Filament\Widgets\ChartWidget;
 use App\Models\Client;
+use Carbon\Carbon;
 
 class IntakeChart extends ChartWidget
 {
-    protected static ?int $sort = 3;
-    protected ?string $heading = 'Client Intake';
 
+    protected static ?int $sort = 3;
+
+
+    public function getHeading(): string
+    {
+        $year = now()->year;
+        return 'Client Intake' . " " . $year;
+    }
 
     protected function getData(): array
     {
