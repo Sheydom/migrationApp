@@ -35,7 +35,7 @@ class ClientForm
                     ->required()->unique(ignoreRecord: true)->validationMessages(['unique' => 'A client with this email address already exists.']),
                 TextInput::make('current_visa'),
                 DatePicker::make('expire_date'),
-                Select::make('status')->options(['Draft' => 'Draft', 'Approved' => 'Approved', 'Rejected' => 'Rejected', 'Pending' => 'Pending', 'Granted' => 'Granted', 'New' => 'New', 'in Progress' => 'In progress'])->required()->default('new'),
+                Select::make('status')->options(['Draft' => 'Draft', 'Approved' => 'Approved', 'Rejected' => 'Rejected', 'Pending' => 'Pending', 'Granted' => 'Granted', 'New' => 'New', 'in Progress' => 'In progress', 'Review AI' => 'Review AI'])->required()->default('new'),
 //                TextInput::make('status')
 //                    ->required()
 //                    ->default('new'),

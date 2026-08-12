@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Filament\Forms\Components\FileUpload;
 use App\Services\NextcloudService;
 use Livewire\WithFileUploads;
-
+use App\Jobs\PassportProcessingJob;
 
 new class extends Component {
     use WithFileUploads;
@@ -71,6 +71,12 @@ new class extends Component {
                 'message' => $exception->getMessage(),
             ]);
         }
+
+        //for PassportProcessing job we keep one local file temporary
+        $localPath = $this->passport->storeAs('temp', "passport-{$client->id}.pdf");
+        $fullPath = storage_path("app/private/{$localPath}");
+
+        PassportProcessingJob::dispatch($client->id, $fullPath);
 
         $this->success = "Form successful submitted.";
 

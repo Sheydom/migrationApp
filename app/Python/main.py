@@ -4,19 +4,22 @@ import json
 from ollama import chat
 import time
 from pathlib import Path
+import sys
 
+passport_path = Path(sys.argv[1])
 
 total = time.perf_counter()
 start = time.perf_counter()
 pages = convert_from_path(
-        "/Users/dominicknabe/Documents/vscode/migrationApp/app/Python/sheylaPassport.pdf",
+        passport_path,
     dpi=300,poppler_path="/opt/homebrew/bin"
 )
 
 # print(f"PDF conversion: {time.perf_counter() - start:.2f}s")
 
 start = time.perf_counter()
-pages[0].save("passport.png", "PNG")
+image_path = passport_path.with_suffix(".png")
+pages[0].save(str(image_path), "PNG")
 # print(f"Save PNG: {time.perf_counter() - start:.2f}s")
 
 
@@ -30,29 +33,29 @@ ocr = PaddleOCR(
     use_textline_orientation=True,
 )
 
-results = ocr.predict("passport.png")
+results = ocr.predict(str(image_path))
 # print(f"PaddleOCR: {time.perf_counter() - start:.2f}s")
 
-base = Path(__file__).resolve().parent
 
-for result in results:
-    result.save_to_img(f"{base}/output")
+#  saving processed images on output folder
+# base = Path(__file__).resolve().parent
+#
+# for result in results:
+#     result.save_to_img(f"{base}/output")
 
 
 # for result in results:
 #     result.save_to_img("/Users/dominicknabe/Documents/vscode/migrationApp/app/Python/output")
 
-    # shows detected data
-    # for result in results:
-    #     result.print()
-    # result.save_to_img("./output")
-    # result.save_to_json("./output")
+
 start = time.perf_counter()
 texts = []
 for result in results:
      texts.extend(result["rec_texts"])
 
 ocr_text = "\n".join(texts)
+if image_path.exists():
+    image_path.unlink()
 
 # print(f"Build text: {time.perf_counter() - start:.4f}s")
 
@@ -95,15 +98,15 @@ Fields:
 
 - nationality
 
-- date_of_birth
+- birth_date
 
-- sex
+- gender
 
 - place_of_birth
 
 - issue_date
 
-- expiry_date
+- expire_date
 
 OCR TEXT:
 
@@ -130,18 +133,17 @@ OCR TEXT:
 
 
 response_type = type(response)
-# print(response)
+#print(response)
 # print(response_type)
 content = response.message.content
 content_data = json.loads(content)
 print(json.dumps(content_data))
-# base_dir = Path(__file__).resolve().parent
-#
-# output_file = base_dir / "passport_data.json"
-#
-# with open(output_file, "w") as f:
-#
-#     json.dump(content_data, f, indent=2)
+base_dir = Path(__file__).resolve().parent
+output_file = base_dir / "passport_data.json"
+
+with open(output_file, "w") as f:
+
+     json.dump(content_data, f, indent=2)
 
 # print(f"json data successfull created '{response_type}'")
 # print(f"Qwen: {time.perf_counter() - start:.2f}s")
