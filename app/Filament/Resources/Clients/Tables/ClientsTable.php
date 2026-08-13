@@ -7,6 +7,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Table;
 use App\Models\Client;
@@ -90,7 +91,7 @@ class ClientsTable
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Filter::make('expiring_visas')->label('Expiring Visas')->query(fn(Builder $query): Builder => $query->whereBetween('expire_date', [now()->startOfDay(), now()->addDays(90)->endOfDay()])),
             ])
             ->recordActions([
                 EditAction::make(),

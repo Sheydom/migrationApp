@@ -2,6 +2,7 @@
 
 namespace App\Filament\Widgets;
 
+use App\Filament\Resources\Clients\ClientResource;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 use App\Models\Client;
@@ -30,7 +31,7 @@ class StatsOverview extends StatsOverviewWidget
             Stat::make('Checklist', "$completed /
         $notCompleted")->description('Progress' . ' ' . $ratio . '%')->color($color),
             Stat::make('Nationalities', Client::query()->distinct()->count('nationality')),
-            Stat::make('Expiring Visas', Client::query()->whereDate('expire_date', '<=', now()->addDays(90))->count())->description('Within the next 3 months')->descriptionIcon('heroicon-s-bolt')->color('danger'),
+            Stat::make('Expiring Visas', Client::query()->whereDate('expire_date', '<=', now()->addDays(90))->count())->description('Within the next 3 months')->descriptionIcon('heroicon-s-bolt')->color('danger')->Url(ClientResource::getUrl('index', ['filters' => ['expiring_visas' => ['isActive' => true,]]]))->extraAttributes(['class' => 'hover:scale-105 border border-transparent hover:border-amber-500 transition ease-in-out duration-200']),
 
         ];
     }

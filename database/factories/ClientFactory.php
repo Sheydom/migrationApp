@@ -58,6 +58,8 @@ class ClientFactory extends Factory
                 'Granted',
 
                 'Refused',
+                'Closed',
+
 
             ]),
 
