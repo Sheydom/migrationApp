@@ -29,13 +29,16 @@ class ClientForm
                 TextInput::make('country_of_residence'),
                 TextInput::make('phone')
                     ->tel(),
-                TextInput::make('email')
+                TextInput::make('email')->confirmed()
                     ->label('Email address')
                     ->email()
                     ->required()->unique(ignoreRecord: true)->validationMessages(['unique' => 'A client with this email address already exists.']),
-                TextInput::make('current_visa'),
+                TextInput::make('email_confirmation')
+                    ->label('Email Confirmation')
+                    ->email()
+                    ->required(),
                 DatePicker::make('expire_date'),
-                Select::make('status')->options(['Rejected' => 'Rejected', 'Submitted' => 'Submitted', 'New' => 'New', 'in Progress' => 'In progress', 'Review AI' => 'Review AI', 'Closed' => 'Closed'])->required()->default('new'),
+                Select::make('status')->options(['Rejected' => 'Rejected', 'Submitted' => 'Submitted', 'New' => 'New', 'in Progress' => 'In progress', 'Review AI' => 'Review AI', 'Closed' => 'Closed'])->default('New')->required(),
                 Textarea::make('notes')
                     ->columnSpanFull(),
                 TextInput::make('folder_path')
