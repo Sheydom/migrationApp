@@ -16,7 +16,7 @@ class PassportProcessingJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(protected int $id, protected string $fullPath)
+    public function __construct(protected int $id, protected string $fullPathPassport)
     {
         //
     }
@@ -30,11 +30,17 @@ class PassportProcessingJob implements ShouldQueue
 
         try {
             set_time_limit(120);
-            $script = base_path('app/Python/main.py');
+            $script = base_path('app/Python/passport.py');
             $python = base_path('app/Python/.venv/bin/python');
-            $result = Process::timeout(120)->run([$python, $script, $this->fullPath]);
+            $result = Process::timeout(120)->run([$python, $script, $this->fullPathPassport]);
+
 
             if ($result->failed()) {
+                Log::error('Python passport processing failed', [
+                    'stdout' => $result->output(),
+                    'stderr' => $result->errorOutput(),
+                    'exit_code' => $result->exitCode(),
+                ]);
                 throw new Exception($result->errorOutput());
             }
 
@@ -56,7 +62,7 @@ class PassportProcessingJob implements ShouldQueue
         ]);
 
         //remove temporary local passport file
-        unlink($this->fullPath);
+        unlink($this->fullPathPassport);
     }
 
 

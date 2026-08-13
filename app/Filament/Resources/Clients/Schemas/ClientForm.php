@@ -20,6 +20,7 @@ class ClientForm
                     ->required(),
                 TextInput::make('last_name')
                     ->required(),
+                TextInput::make('current_visa'),
                 DatePicker::make('birth_date'),
                 TextInput::make('gender'),
                 TextInput::make('occupation'),

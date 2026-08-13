@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\VisaProcessingJob;
 use App\Models\Client;
 use Livewire\Component;
 use Illuminate\Support\Facades\URL;
@@ -73,10 +74,17 @@ new class extends Component {
         }
 
         //for PassportProcessing job we keep one local file temporary
-        $localPath = $this->passport->storeAs('temp', "passport-{$client->id}.pdf");
-        $fullPath = storage_path("app/private/{$localPath}");
+        if ($this->current_visa) {
+            $localPathVisa = $this->current_visa->storeAs('temp', "visa-{$client->id}.pdf");
+        }
+        if ($this->passport) {
+            $localPathPassport = $this->passport->storeAs('temp', "passport-{$client->id}.pdf");
+        }
+        $fullPathVisa = storage_path("app/private/{$localPathVisa}");
+        $fullPathPassport = storage_path("app/private/{$localPathPassport}");
 
-        PassportProcessingJob::dispatch($client->id, $fullPath);
+        PassportProcessingJob::dispatch($client->id, $fullPathPassport);
+        VisaProcessingJob::dispatch($client->id, $fullPathVisa);
 
         $this->success = "Form successful submitted.";
 
