@@ -26,8 +26,9 @@ pages[0].save(str(image_path), "PNG")
 start = time.perf_counter()
 ocr = PaddleOCR(
     lang="en",
-    #  text_detection_model_name="PP-OCRv5_mobile_det",
-    #  text_recognition_model_name="PP-OCRv5_mobile_rec",
+    #smaller yolo models-mobile
+     text_detection_model_name="PP-OCRv5_mobile_det",
+     text_recognition_model_name="PP-OCRv5_mobile_rec",
     use_doc_orientation_classify=True,
     use_doc_unwarping=False,
     use_textline_orientation=True,
@@ -37,9 +38,8 @@ results = ocr.predict(str(image_path))
 # print(f"PaddleOCR: {time.perf_counter() - start:.2f}s")
 
 
-#  saving processed images on output folder
+#  saving processed images on output folder no indentation! except forloop
 # base = Path(__file__).resolve().parent
-#
 # for result in results:
 #     result.save_to_img(f"{base}/output")
 
