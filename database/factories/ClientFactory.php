@@ -50,13 +50,8 @@ class ClientFactory extends Factory
             'status' => fake()->randomElement([
 
                 'New',
-
                 'Pending',
-
                 'In Progress',
-
-                'Granted',
-
                 'Refused',
                 'Closed',
 

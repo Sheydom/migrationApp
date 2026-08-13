@@ -27,7 +27,6 @@ class ClientsTable
                     ->sortable()->color(fn(?string $state): string => match ($state) {
                         'Review AI' => 'warning',
                         'Refused' => 'danger',
-                        'Granted' => 'success',
                         'Pending' => 'secondary',
                         'New' => 'info',
                         'In Progress' => 'primary',
@@ -92,6 +91,12 @@ class ClientsTable
             ])
             ->filters([
                 Filter::make('expiring_visas')->label('Expiring Visas')->query(fn(Builder $query): Builder => $query->whereBetween('expire_date', [now()->startOfDay(), now()->addDays(90)->endOfDay()])),
+                Filter::make('pending')->label('Pending')->query(fn(Builder $query): Builder => $query->where('status', 'pending'),
+                ), Filter::make('new')->label('New')->query(fn(Builder $query): Builder => $query->where('status', 'new')),
+                Filter::make('closed')->label('Closed')->query(fn(Builder $query): Builder => $query->where('status', 'closed')),
+                Filter::make('In Progress')->label('In Progress')->query(fn(Builder $query): Builder => $query->where('status', 'In Progress')),
+                Filter::make('checklist')->label('Checklist')->query(fn(Builder $query): Builder => $query->whereHas('checklistItems', fn(Builder $query) => $query->where('is_completed', false))),
+                Filter::make('Review AI')->label('Review AI')->query(fn(Builder $query): Builder => $query->where('status', 'Review AI'))
             ])
             ->recordActions([
                 EditAction::make(),
