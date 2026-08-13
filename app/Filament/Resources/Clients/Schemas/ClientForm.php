@@ -26,8 +26,9 @@ class ClientForm
                 TextInput::make('occupation'),
                 TextInput::make('nationality')
                     ->required(),
-                TextInput::make('passport_number'),
                 TextInput::make('country_of_residence'),
+                TextInput::make('passport_number'),
+                DatePicker::make('expire_date')->label('Passport expiry date'),
                 TextInput::make('phone')
                     ->tel(),
                 TextInput::make('email')->confirmed(fn(string $operation): bool => $operation === 'create')
@@ -38,7 +39,7 @@ class ClientForm
                     ->label('Email Confirmation')
                     ->email()
                     ->required()->visibleOn('create'),
-                DatePicker::make('expire_date'),
+
                 Select::make('status')->options(['Refused' => 'Refused', 'Submitted' => 'Submitted', 'New' => 'New', 'in Progress' => 'In progress', 'Review AI' => 'Review AI', 'Closed' => 'Closed'])->default('New')->required(),
                 Textarea::make('notes')
                     ->columnSpanFull(),
