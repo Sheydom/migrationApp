@@ -49,7 +49,7 @@ class VisaProcessingJob implements ShouldQueue
 
         $output = json_decode($result->output(), true);
         $client = Client::findOrFail($this->id);
-        $client->update(['current_visa' => $output['current_visa']]);
+        $client->update(['current_visa' => $output['current_visa'] ?? null]);
 //        remove temporary local visa file
         unlink($this->fullPathVisa);
 

@@ -48,13 +48,13 @@ new class extends Component {
             'last_name' => 'required|string|max:255',
             'email' => 'required|email|unique:clients,email|confirmed',
             'phone' => 'required|string|max:30',
-            'nationality' => 'required|string|max:50',
+//            'nationality' => 'required|string|max:50',
             'passport' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
             'current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
             'other_documents' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
         ]);
 
-        $client = Client::create(['first_name' => $validated['first_name'], 'last_name' => $validated['last_name'], 'email' => $validated['email'], 'nationality' => $validated['nationality']]);
+        $client = Client::create(['first_name' => $validated['first_name'], 'last_name' => $validated['last_name'], 'email' => $validated['email'], 'phone' => $validated['phone']]);
         $client->refresh();
         try {
             if ($this->passport) {
@@ -155,41 +155,24 @@ new class extends Component {
                     @enderror
                 </div>
 
-                <div>
-                    <label for="nationality"
-                           class="block text-sm font-semibold text-gray-700 mb-2">
-                        Nationality
-                    </label>
+                {{--                <div>--}}
+                {{--                    <label for="nationality"--}}
+                {{--                           class="block text-sm font-semibold text-gray-700 mb-2">--}}
+                {{--                        Nationality--}}
+                {{--                    </label>--}}
 
-                    <input
-                        id="nationality"
-                        type="text"
-                        wire:model="nationality"
-                        required
-                        class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-200 outline-none">
+                {{--                    <input--}}
+                {{--                        id="nationality"--}}
+                {{--                        type="text"--}}
+                {{--                        wire:model="nationality"--}}
+                {{--                        required--}}
+                {{--                        class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-200 outline-none">--}}
 
-                    @error('nationality')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
+                {{--                    @error('nationality')--}}
+                {{--                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>--}}
+                {{--                    @enderror--}}
+                {{--                </div>--}}
 
-                <div>
-                    <label for="phone"
-                           class="block text-sm font-semibold text-gray-700 mb-2">
-                        Phone Number
-                    </label>
-
-                    <input
-                        id="phone"
-                        type="tel"
-                        wire:model="phone"
-                        required
-                        class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-200 outline-none">
-
-                    @error('phone')
-                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
-                    @enderror
-                </div>
 
                 <div>
                     <label for="email"
@@ -226,12 +209,30 @@ new class extends Component {
                     <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+                <div>
+                    <label for="phone"
+                           class="block text-sm font-semibold text-gray-700 mb-2">
+                        Phone Number
+                    </label>
+
+                    <input
+                        id="phone"
+                        type="tel"
+                        wire:model="phone"
+                        required
+                        class="w-full rounded-lg border border-gray-300 px-4 py-3 focus:border-cyan-600 focus:ring-2 focus:ring-cyan-200 outline-none">
+
+                    @error('phone')
+                    <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+                <div></div>
                 <div class="flex flex-col cursor-pointer"><label class="cursor-pointer" for="passport">Passport</label>
                     <input type="file" id="passport" wire:model="passport" accept=".pdf,.jpg,.jpeg,.png"
                            class="inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg cursor-pointer hover:bg-cyan-800 transition">
 
                     @error('passport') <p>{{$message}}</p> @enderror</div>
-                <div class="flex flex-col cursor-pointer"><label class="cursor-pointer" for="currentVisa">Current
+                <div class="flex flex-col cursor-pointer mt-auto"><label class="cursor-pointer" for="currentVisa">Current
                         Visa</label>
                     <input type="file" id="currentVisa" wire:model="current_visa"
                            accept=".pdf,.jpg,.jpeg,.png"

@@ -57,6 +57,7 @@ class PassportProcessingJob implements ShouldQueue
             'passport_number' => $output['passport_number'] ?? null,
             'expire_date' => $output['expire_date'] ?? null,
             'birth_date' => $output['birth_date'] ?? null,
+            'nationality' => $output['nationality'] ?? null,
             'gender' => ($output['gender'] ?? null) === 'F' ? 'Female' : 'Male',
             'status' => 'Review AI',
         ]);

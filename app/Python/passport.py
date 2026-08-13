@@ -141,12 +141,12 @@ content_data = json.loads(content)
 print(json.dumps(content_data))
 
 #  important json file for debugging
-# base_dir = Path(__file__).resolve().parent
-# output_file = base_dir / "passport_data.json"
-#
-# with open(output_file, "w") as f:
-#
-#      json.dump(content_data, f, indent=2)
+base_dir = Path(__file__).resolve().parent
+output_file = base_dir / "passport_data.json"
+
+with open(output_file, "w") as f:
+
+     json.dump(content_data, f, indent=2)
 
 # print(f"json data successfull created '{response_type}'")
 # print(f"Qwen: {time.perf_counter() - start:.2f}s")
