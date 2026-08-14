@@ -5,6 +5,9 @@ from ollama import chat
 import time
 from pathlib import Path
 import sys
+from ollama import Client
+
+
 
 passport_path = Path(sys.argv[1])
 
@@ -12,7 +15,7 @@ total = time.perf_counter()
 start = time.perf_counter()
 pages = convert_from_path(
         passport_path,
-    dpi=300,poppler_path="/opt/homebrew/bin"
+    dpi=300
 )
 
 # print(f"PDF conversion: {time.perf_counter() - start:.2f}s")
@@ -61,8 +64,10 @@ if image_path.exists():
 
 #display ocr_text for debugging
 # print(ocr_text)
+
 start = time.perf_counter()
-response = chat(
+client = Client(host="http://ollama:11434")
+response = client.chat(
 
     model="qwen2.5:1.5b",
 

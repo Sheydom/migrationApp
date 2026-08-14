@@ -18,7 +18,15 @@ class StatsOverview extends StatsOverviewWidget
     {
         $completed = ChecklistItem::query()->where('is_completed', true)->count();
         $notCompleted = ChecklistItem::query()->where('is_completed', false)->count();
-        $ratio = round($completed / $notCompleted * 100, 1);
+        $ratio = null;
+
+        if ($notCompleted > 0) {
+            $ratio = round($completed / $notCompleted * 100, 1);
+
+        } else {
+            $notCompleted = "";
+        }
+
         if ($ratio < 30) {
             $color = 'danger';
         } elseif ($ratio < 50) {

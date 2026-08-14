@@ -1,0 +1,15 @@
+services:
+  app:
+    platform: linux/amd64
+    volumes:
+      - .:/var/www/html
+
+  queue-1:
+    platform: linux/amd64
+    volumes:
+      - .:/var/www/html
+
+  queue-2:
+    platform: linux/amd64
+    volumes:
+      - .:/var/www/html

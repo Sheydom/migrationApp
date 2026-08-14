@@ -21,8 +21,10 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Support\Enums\Width;
 use Psy\Readline\Interactive\Renderer\CompletionMenuWidget;
 
+
 class AdminPanelProvider extends PanelProvider
 {
+
     public function panel(Panel $panel): Panel
     {
         return $panel
