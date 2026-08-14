@@ -6,6 +6,7 @@ namespace App\Providers;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use App\Observers\ClientObserver;
@@ -29,6 +30,9 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
         Client::observe(ClientObserver::class);
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
 
     }
 

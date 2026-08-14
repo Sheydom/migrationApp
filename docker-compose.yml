@@ -9,9 +9,9 @@ services:
         environment:
             DB_HOST: mysql
             DB_PORT: 3306
-            DB_DATABASE: migration_app
-            DB_USERNAME: migration-user
-            DB_PASSWORD: Kakibaum66!!
+            DB_DATABASE: ${MYSQL_DATABASE}
+            DB_USERNAME: ${MYSQL_USER}
+            DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         networks:
             - migration
     #queue worker, for AI llm file upload validation
@@ -24,7 +24,7 @@ services:
         environment:
             DB_HOST: mysql
             DB_PORT: 3306
-            DB_DATABASE: migration_app
+            DB_DATABASE: ${MYSQL_DATABASE}
         networks:
             - migration
     queue-2:
@@ -35,7 +35,7 @@ services:
         environment:
             DB_HOST: mysql
             DB_PORT: 3306
-            DB_DATABASE: migration_app
+            DB_DATABASE: ${MYSQL_DATABASE}
         networks:
             - migration
 
@@ -46,10 +46,10 @@ services:
         container_name: migration-mysql
         restart: unless-stopped
         environment:
-            MYSQL_DATABASE: migration_app
-            MYSQL_USER: migration-user
-            MYSQL_PASSWORD: Kakibaum66!!
-            MYSQL_ROOT_PASSWORD: Kakibaum66!!
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
         volumes:
             - migration-db:/var/lib/mysql
         networks:
