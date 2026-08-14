@@ -6,6 +6,8 @@ services:
         build: .
         container_name: migration-app
         restart: unless-stopped
+        env_file:
+            - .env
         environment:
             DB_HOST: mysql
             DB_PORT: 3306
