@@ -14,7 +14,6 @@ services:
             DB_PASSWORD: ${MYSQL_PASSWORD}
         networks:
             - migration
-            - caddy_net
     #queue worker, for AI llm file upload validation
     #better performance, parallel jobs.
     queue-1:
@@ -79,6 +78,7 @@ services:
             - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
         networks:
             - migration
+            - caddy_net
 
 
 
