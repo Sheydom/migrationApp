@@ -84,6 +84,9 @@ services:
 
 networks:
     migration:
+
+    caddy_net:
+        external: true
 volumes:
     migration-db:
     ollama-data:
