@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-//Route::view('/', 'welcome')->name('home');
+Route::view('/', '/admin');
 
 
 Route::livewire('/register', 'pages.client-register')->name('client-register')->middleware('signed');
