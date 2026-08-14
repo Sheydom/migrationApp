@@ -76,6 +76,7 @@ services:
             - "8080:80"
         volumes:
             - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
+            - ./public:/var/www/html/public:ro
         networks:
             - migration
             - caddy_net
