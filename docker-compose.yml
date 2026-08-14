@@ -11,9 +11,10 @@ services:
             DB_PORT: 3306
             DB_DATABASE: ${MYSQL_DATABASE}
             DB_USERNAME: ${MYSQL_USER}
-            DB_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+            DB_PASSWORD: ${MYSQL_PASSWORD}
         networks:
             - migration
+            - caddy_net
     #queue worker, for AI llm file upload validation
     #better performance, parallel jobs.
     queue-1:
@@ -76,7 +77,6 @@ services:
             - "8080:80"
         volumes:
             - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
-            - .:/var/www/html
         networks:
             - migration
 
