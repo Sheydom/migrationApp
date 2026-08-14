@@ -70,6 +70,16 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 
+
+# -------------------------
+# Stage 4: Caddy image
+# -------------------------
+FROM caddy:latest AS web
+
+COPY ./docker/caddy/Caddyfile /etc/caddy/Caddyfile
+
+COPY --from=frontend-build /var/www/html/public /var/www/html/public
+
 # Laravel + vendor
 COPY --from=php-build /var/www/html /var/www/html
 

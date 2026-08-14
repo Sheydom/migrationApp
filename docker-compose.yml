@@ -71,14 +71,13 @@ services:
 
 
     web:
-        image: caddy:latest
+        build:
+            context: .
+            target: web
         container_name: migration-caddy
         restart: unless-stopped
         ports:
             - "8080:80"
-        volumes:
-            - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile
-            - ./public:/var/www/html/public:ro
         networks:
             - migration
             - caddy_net
