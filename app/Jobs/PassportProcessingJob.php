@@ -1,13 +1,14 @@
 <?php
 
 namespace App\Jobs;
+
 use Exception;
 use App\Models\Client;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Process;
 use Illuminate\Support\Facades\Log;
-use Exception;
+
 
 class PassportProcessingJob implements ShouldQueue
 {
