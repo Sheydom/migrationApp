@@ -50,6 +50,27 @@ COPY --from=php-build /var/www/html /var/www/html
 RUN npm run build
 
 
+
+
+
+
+# -------------------------
+
+# Python 3.12.13 stage
+
+# -------------------------
+
+FROM python:3.12.13-slim AS python-runtime
+
+RUN python -m venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
+
+COPY requirements.txt /tmp/requirements.txt
+
+RUN pip install --upgrade pip \
+
+    && pip install -r /tmp/requirements.txt
 # -------------------------
 # Stage 3: Final app image
 # -------------------------
@@ -70,8 +91,22 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 COPY --from=php-build /var/www/html /var/www/html
-RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
-    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+# Copy Python 3.12.13 runtime
+
+COPY --from=python-runtime /usr/local /usr/local
+
+# Copy Python virtual environment + installed packages
+
+COPY --from=python-runtime /opt/venv /opt/venv
+
+ENV PATH="/opt/venv/bin:$PATH"
+ RUN printf "upload_max_filesize=20M\npost_max_size=25M\n" \
+    > /usr/local/etc/php/conf.d/uploads.ini   
+ RUN mkdir -p /var/www/html/storage/framework/livewire-tmp \
+    && chown -R www-data:www-data /var/www/html/storage \
+    && chmod -R ug+rwX /var/www/html/storage   
+ RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache   
 # -------------------------
 # Stage 4: Caddy image
 # -------------------------

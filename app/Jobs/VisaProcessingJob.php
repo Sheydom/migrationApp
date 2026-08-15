@@ -1,8 +1,7 @@
 <?php
 
 namespace App\Jobs;
-
-use _PHPStan_02959ca10\Nette\Neon\Exception;
+use Exception;
 use App\Models\Client;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;

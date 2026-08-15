@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Jobs;
-
+use Exception;
 use App\Models\Client;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;

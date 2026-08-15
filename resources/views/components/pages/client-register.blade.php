@@ -9,6 +9,7 @@ use Filament\Forms\Components\FileUpload;
 use App\Services\NextcloudService;
 use Livewire\WithFileUploads;
 use App\Jobs\PassportProcessingJob;
+use Illuminate\Support\Facades\Log;
 
 new class extends Component {
     use WithFileUploads;
@@ -35,10 +36,40 @@ new class extends Component {
         $this->signedUrl = request()->fullUrl();
     }
 
+    // ADD IT HERE
+
+    public function updatedCurrentVisa(): void
+
+    {
+
+        Log::info('Current visa property updated', [
+
+            'has_file' => (bool) $this->current_visa,
+
+            'type' => get_debug_type($this->current_visa),
+
+        ]);
+
+    }
+
+    public function updatedPassport(): void
+
+    {
+
+        Log::info('Passport property updated', [
+
+            'has_file' => (bool) $this->passport,
+
+            'type' => get_debug_type($this->passport),
+
+        ]);
+
+    }
+
     public function save(NextcloudService $nextcloud): void
     {
         $signedRequest = Request::create($this->signedUrl);
-        if (!URL::hasValidSignature($signedRequest)) {
+        if (!URL::hasValidRelativeSignature($signedRequest)) {
             abort(403, 'This registration link has expired or is invalid.');
         }
 
@@ -51,7 +82,8 @@ new class extends Component {
 //            'nationality' => 'required|string|max:50',
             'passport' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
             'current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
-            'other_documents' => 'nullable|file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
+            'other_documents' => 'nullable|array',
+            'other_documents.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
         ]);
 
         $client = Client::create(['first_name' => $validated['first_name'], 'last_name' => $validated['last_name'], 'email' => $validated['email'], 'phone' => $validated['phone']]);
@@ -63,7 +95,7 @@ new class extends Component {
             if ($this->current_visa) {
                 $nextcloud->uploadFile(folderPath: "{$client->folder_path}/Visa", file: $this->current_visa);
             }
-            foreach ($this->other_documents as $document) {
+            foreach ($this->other_documents ?? [] as $document) {
                 $nextcloud->uploadFile(folderPath: "{$client->folder_path}", file: $document);
             }
         } catch (\Throwable $exception) {
@@ -73,18 +105,46 @@ new class extends Component {
             ]);
         }
 
+        // ADD IT HERE ↓↓↓
+
+Log::info('About to dispatch processing jobs', [
+
+    'client_id' => $client->id,
+
+    'passport' => (bool) $this->passport,
+
+    'visa' => (bool) $this->current_visa,
+
+]);
+
         //for PassportProcessing job we keep one local file temporary
         if ($this->current_visa) {
-            $localPathVisa = $this->current_visa->storeAs('temp', "visa-{$client->id}.pdf");
-        }
-        if ($this->passport) {
-            $localPathPassport = $this->passport->storeAs('temp', "passport-{$client->id}.pdf");
-        }
-        $fullPathVisa = storage_path("app/private/{$localPathVisa}");
-        $fullPathPassport = storage_path("app/private/{$localPathPassport}");
+    $localPathVisa = $this->current_visa->storeAs(
+        'temp',
+        "visa-{$client->id}.pdf"
+    );
 
-        PassportProcessingJob::dispatch($client->id, $fullPathPassport);
-        VisaProcessingJob::dispatch($client->id, $fullPathVisa);
+    $fullPathVisa = storage_path("app/private/{$localPathVisa}");
+
+    VisaProcessingJob::dispatch(
+        $client->id,
+        $fullPathVisa
+    );
+}
+
+if ($this->passport) {
+    $localPathPassport = $this->passport->storeAs(
+        'temp',
+        "passport-{$client->id}.pdf"
+    );
+
+    $fullPathPassport = storage_path("app/private/{$localPathPassport}");
+
+    PassportProcessingJob::dispatch(
+        $client->id,
+        $fullPathPassport
+    );
+}
 
         $this->success = "Form successful submitted.";
 

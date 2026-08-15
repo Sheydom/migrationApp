@@ -17,10 +17,12 @@ class Dashboard extends BaseDashboard
                 ->icon('heroicon-o-link')
                 ->color('primary')
                 ->action(function (): void {
-                    $url = URL::temporarySignedRoute(
+                    $relativeUrl = URL::temporarySignedRoute(
                         'client-register',
                         now()->addWeek(),
+                        absolute: false,
                     );
+                    $url = rtrim(config('app.url'),'/') . $relativeUrl;
 
                     Notification::make()
                         ->title('Registration link generated')

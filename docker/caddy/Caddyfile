@@ -2,8 +2,9 @@
     root * /var/www/html/public
 
     php_fastcgi app:9000 {
-        env HTTP_X_FORWARDED_PROTO {http.request.header.X-Forwarded-Proto}
-        env HTTP_X_FORWARDED_HOST {http.request.header.X-Forwarded-Host}
+        env HTTPS on
+        env HTTP_X_FORWARDED_PROTO https
+        env HTTP_X_FORWARDED_HOST {http.request.host}
     }
 
     file_server
