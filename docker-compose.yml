@@ -3,7 +3,9 @@
 
 services:
     app:
-        build: .
+        build: 
+            context: .
+            target: app
         container_name: migration-app
         restart: unless-stopped
         env_file:
@@ -19,10 +21,14 @@ services:
     #queue worker, for AI llm file upload validation
     #better performance, parallel jobs.
     queue-1:
-        build: .
+        build: 
+            context: .
+            target: app
         container_name: migration-worker-1
         restart: unless-stopped
         command: php artisan queue:work --sleep=3 --tries=3
+        env_file:
+            - .env
         environment:
             DB_HOST: mysql
             DB_PORT: 3306
@@ -30,10 +36,14 @@ services:
         networks:
             - migration
     queue-2:
-        build: .
+        build: 
+            context: .
+            target: app
         container_name: migration-worker-2
         restart: unless-stopped
         command: php artisan queue:work --sleep=3 --tries=3
+        env_file:
+            - .env
         environment:
             DB_HOST: mysql
             DB_PORT: 3306

@@ -53,7 +53,7 @@ RUN npm run build
 # -------------------------
 # Stage 3: Final app image
 # -------------------------
-FROM php:8.5-fpm
+FROM php:8.5-fpm AS app
 
 RUN apt-get update && apt-get install -y \
     poppler-utils \
@@ -69,8 +69,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /var/www/html
-
-
+COPY --from=php-build /var/www/html /var/www/html
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache \
+    && chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
 # -------------------------
 # Stage 4: Caddy image
 # -------------------------
@@ -85,9 +86,6 @@ COPY --from=php-build /var/www/html /var/www/html
 
 # Compiled Vite assets
 COPY --from=frontend-build /var/www/html/public/build /var/www/html/public/build
+CMD ["caddy", "run", "--config", "/etc/caddy/Caddyfile", "--adapter", "caddyfile"]
 
-RUN chown -R www-data:www-data \
-    storage \
-    bootstrap/cache
 
-CMD ["php-fpm"]
