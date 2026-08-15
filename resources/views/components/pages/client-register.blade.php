@@ -44,7 +44,7 @@ new class extends Component {
 
         Log::info('Current visa property updated', [
 
-            'has_file' => (bool) $this->current_visa,
+            'has_file' => (bool)$this->current_visa,
 
             'type' => get_debug_type($this->current_visa),
 
@@ -58,7 +58,7 @@ new class extends Component {
 
         Log::info('Passport property updated', [
 
-            'has_file' => (bool) $this->passport,
+            'has_file' => (bool)$this->passport,
 
             'type' => get_debug_type($this->passport),
 
@@ -86,7 +86,7 @@ new class extends Component {
             'other_documents.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
         ]);
 
-        $client = Client::create(['first_name' => $validated['first_name'], 'last_name' => $validated['last_name'], 'email' => $validated['email'], 'phone' => $validated['phone']]);
+        $client = Client::create(['first_name' => $validated['first_name'], 'last_name' => $validated['last_name'], 'email' => $validated['email'], 'phone' => $validated['phone'], 'status' => 'Review AI',]);
         $client->refresh();
         try {
             if ($this->passport) {
@@ -107,44 +107,44 @@ new class extends Component {
 
         // ADD IT HERE ↓↓↓
 
-Log::info('About to dispatch processing jobs', [
+        Log::info('About to dispatch processing jobs', [
 
-    'client_id' => $client->id,
+            'client_id' => $client->id,
 
-    'passport' => (bool) $this->passport,
+            'passport' => (bool)$this->passport,
 
-    'visa' => (bool) $this->current_visa,
+            'visa' => (bool)$this->current_visa,
 
-]);
+        ]);
 
         //for PassportProcessing job we keep one local file temporary
         if ($this->current_visa) {
-    $localPathVisa = $this->current_visa->storeAs(
-        'temp',
-        "visa-{$client->id}.pdf"
-    );
+            $localPathVisa = $this->current_visa->storeAs(
+                'temp',
+                "visa-{$client->id}.pdf"
+            );
 
-    $fullPathVisa = storage_path("app/private/{$localPathVisa}");
+            $fullPathVisa = storage_path("app/private/{$localPathVisa}");
 
-    VisaProcessingJob::dispatch(
-        $client->id,
-        $fullPathVisa
-    );
-}
+            VisaProcessingJob::dispatch(
+                $client->id,
+                $fullPathVisa
+            );
+        }
 
-if ($this->passport) {
-    $localPathPassport = $this->passport->storeAs(
-        'temp',
-        "passport-{$client->id}.pdf"
-    );
+        if ($this->passport) {
+            $localPathPassport = $this->passport->storeAs(
+                'temp',
+                "passport-{$client->id}.pdf"
+            );
 
-    $fullPathPassport = storage_path("app/private/{$localPathPassport}");
+            $fullPathPassport = storage_path("app/private/{$localPathPassport}");
 
-    PassportProcessingJob::dispatch(
-        $client->id,
-        $fullPathPassport
-    );
-}
+            PassportProcessingJob::dispatch(
+                $client->id,
+                $fullPathPassport
+            );
+        }
 
         $this->success = "Form successful submitted.";
 
