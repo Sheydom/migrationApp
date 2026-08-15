@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Jobs;
+
 use Exception;
 use App\Models\Client;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -31,7 +32,7 @@ class VisaProcessingJob implements ShouldQueue
             $script = base_path("app/Python/visa.py");
 //            only for local
 //            $python = base_path("app/Python/.venv/bin/python");
-            $python = "/opt/venv/bin/python";
+            $python = app()->environment('production') ? '/opt/venv/bin/python' : base_path("app/Python/.venv/bin/python");
             $result = Process::timeout(120)->run([$python, $script, $this->fullPathVisa]);
 
 

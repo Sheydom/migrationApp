@@ -34,7 +34,7 @@ class PassportProcessingJob implements ShouldQueue
             $script = base_path('app/Python/passport.py');
             //            only for local
 //            $python = base_path("app/Python/.venv/bin/python");
-            $python = "/opt/venv/bin/python";
+            $python = app()->environment('production') ? '/opt/venv/bin/python' : base_path("app/Python/.venv/bin/python");
             $result = Process::timeout(120)->run([$python, $script, $this->fullPathPassport]);
 
 
