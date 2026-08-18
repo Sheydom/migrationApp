@@ -66,9 +66,10 @@ if image_path.exists():
 # print(ocr_text)
 
 start = time.perf_counter()
-client = Client(host="http://ollama:11434")
-response = client.chat(
-
+#for production
+# client = Client(host="http://ollama:11434")
+# response = client.chat(
+response = chat(
     model="qwen2.5:1.5b",
 
     messages=[

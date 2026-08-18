@@ -66,9 +66,10 @@ if image_path.exists():
 # print(ocr_text)
 start = time.perf_counter()
 # comment out client and chance to only chat(nodel ecetera) below for local
-client = Client(host="http://ollama:11434")
-response = client.chat(
-
+#for producition
+# client = Client(host="http://ollama:11434")
+# response = client.chat(
+response = chat(
     model="qwen2.5:1.5b",
 
     messages=[
