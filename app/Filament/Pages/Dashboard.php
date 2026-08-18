@@ -26,7 +26,12 @@ class Dashboard extends BaseDashboard
 
                     Notification::make()
                         ->title('Registration link generated')
-                        ->body($url)
+                        ->body($url)->actions([
+                            Action::make('Copy Link')->button()->icon('heroicon-o-document')->color('primary')->alpineClickHandler(
+                            // Copy to clipboard and show tooltip.
+                                "window.navigator.clipboard.writeText( '$url' ); \$tooltip('Copied to clipboard', { timeout: 1500 });"
+                            ),
+                        ])
                         ->success()
                         ->persistent()
                         ->send();
