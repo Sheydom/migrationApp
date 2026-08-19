@@ -41,6 +41,7 @@ new class extends Component {
     public function updatedCurrentVisa(): void
 
     {
+        $this->validateOnly('current_Visa',['current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',]);
 
         Log::info('Current visa property updated', [
 
@@ -55,6 +56,8 @@ new class extends Component {
     public function updatedPassport(): void
 
     {
+
+        $this->validateOnly('passport',['passport'=>'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',]);
 
         Log::info('Passport property updated', [
 
@@ -80,10 +83,10 @@ new class extends Component {
             'email' => 'required|email|unique:clients,email|confirmed',
             'phone' => 'required|string|max:30',
 //            'nationality' => 'required|string|max:50',
-            'passport' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
-            'current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10240',
+            'passport' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
+            'current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
             'other_documents' => 'nullable|array',
-            'other_documents.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:10240',
+            'other_documents.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:20480',
         ]);
 
         $client = Client::create(['first_name' => $validated['first_name'], 'last_name' => $validated['last_name'], 'email' => $validated['email'], 'phone' => $validated['phone'], 'status' => 'Review AI',]);
