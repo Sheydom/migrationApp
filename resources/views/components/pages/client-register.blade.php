@@ -30,6 +30,8 @@ new class extends Component {
     public $passport;
     public $current_visa;
     public $other_documents;
+    public bool $passportUploadError = false;
+    public bool $currentVisaUploadError = false;
 
     public function mount(): void
     {
@@ -296,10 +298,12 @@ new class extends Component {
                 <div></div>
                 <div class="flex flex-col cursor-pointer"><label class="cursor-pointer" for="passport">Passport</label>
                     <input type="file" id="passport" wire:model="passport" accept=".pdf,.jpg,.jpeg,.JPG,.png"
-                           class="inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg cursor-pointer hover:bg-cyan-800 transition">
+                           class="inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg cursor-pointer hover:bg-cyan-800 transition"
+                    >
 
                     @error('passport') <p class="text-sm text-red-600">{{$message}}</p> @enderror</div>
-                <div class="flex flex-col cursor-pointer mt-auto"><label class="cursor-pointer" for="currentVisa">Current
+                <div class="flex flex-col  cursor-pointer"><label class="cursor-pointer"
+                                                                  for="currentVisa">Current
                         Visa</label>
                     <input type="file" id="currentVisa" wire:model="current_visa"
                            accept=".pdf,.jpg,.jpeg,.png"
@@ -310,7 +314,7 @@ new class extends Component {
 
             </div>
 
-
+            <p>Max. File size 20MB</p>
             <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-5">
                 <h3 class="font-semibold text-cyan-800">
                     Privacy Notice
