@@ -41,7 +41,9 @@ new class extends Component {
     public function updatedCurrentVisa(): void
 
     {
-        $this->validateOnly('current_Visa',['current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',]);
+        $this->validateOnly('current_visa',['current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',],[
+            'current_visa.max'=>'The file must not be larger than 20MB.'
+        ]);
 
         Log::info('Current visa property updated', [
 
@@ -57,7 +59,9 @@ new class extends Component {
 
     {
 
-        $this->validateOnly('passport',['passport'=>'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',]);
+        $this->validateOnly('passport',['passport'=>'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',],[
+            'passport.max'=>'The file must not be larger than 20MB.'
+        ]);
 
         Log::info('Passport property updated', [
 
@@ -294,15 +298,15 @@ new class extends Component {
                     <input type="file" id="passport" wire:model="passport" accept=".pdf,.jpg,.jpeg,.png"
                            class="inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg cursor-pointer hover:bg-cyan-800 transition">
 
-                    @error('passport') <p>{{$message}}</p> @enderror</div>
-                <div class="flex flex-col cursor-pointer mt-auto"><label class="cursor-pointer" for="currentVisa">Current
+                    @error('passport') <p class="text-red-500 text-sm">{{$message}}</p> @enderror</div>
+                <div class="flex flex-col cursor-pointer "><label class="cursor-pointer" for="currentVisa">Current
                         Visa</label>
                     <input type="file" id="currentVisa" wire:model="current_visa"
                            accept=".pdf,.jpg,.jpeg,.png"
                            class=" inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg
                            cursor-pointer hover:bg-cyan-800 transition">
 
-                    @error('current_visa') <p>{{$message}}</p> @enderror</div>
+                    @error('current_visa') <p class="text-red-500 text-sm">{{$message}}</p> @enderror</div>
 
             </div>
 
@@ -327,9 +331,9 @@ new class extends Component {
                     @endif
                 </div>
                 <button
+                @disabled($errors->has('current_visa')||$errors->has('passport'))
                     type="submit"
-                    wire:loading.attr="disabled"
-                    class="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold px-8 py-3 rounded-lg shadow transition">
+                    class="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold px-8 py-3 rounded-lg shadow transition {{$errors->has('current_visa')||$errors->has('passport')? 'opacity-30 cursor-not-allowed':''}}">
 
                     <span wire:loading.remove>
                         Submit Application
