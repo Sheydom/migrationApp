@@ -43,7 +43,7 @@ new class extends Component {
     {
 
         $this->validateOnly('current_visa', ['current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10480',], [
-            'current_visa.max' => 'The file must be larger than 20 MB.'
+            'current_visa.max' => 'The file must not be larger than 20 MB.'
         ]);
 
 
@@ -334,7 +334,7 @@ new class extends Component {
                     @disabled($errors->has('current_visa')||$errors->has('passport'))
                     type="submit"
                     wire:loading.class="opacity-50 pointer-events-none"
-                    class="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold px-8 py-3 rounded-lg shadow transition {{$errors->has('current_visa')||$errors->has('passport')? 'opacity-30 text-red-500 cursor-not-allowed':''}}">
+                    class="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold px-8 py-3 rounded-lg shadow transition {{$errors->has('current_visa')||$errors->has('passport')? 'opacity-30  cursor-not-allowed':''}}">
 
                     <span wire:loading.remove>
                         Submit Application
