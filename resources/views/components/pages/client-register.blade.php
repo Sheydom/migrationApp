@@ -42,7 +42,7 @@ new class extends Component {
 
     {
 
-        $this->validateOnly('current_visa', ['current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:10480',], [
+        $this->validateOnly('current_visa', ['current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',], [
             'current_visa.max' => 'The file must not be larger than 20 MB.'
         ]);
 
