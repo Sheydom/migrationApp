@@ -7,4 +7,6 @@ use Filament\Widgets\Widget;
 class MigrationAgentWidged extends Widget
 {
     protected string $view = 'filament.widgets.migration-agent-widged';
+    protected int | string | array $columnSpan = 1;
+    protected static ?int $sort = 4;
 }

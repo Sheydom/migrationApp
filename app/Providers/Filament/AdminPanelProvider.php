@@ -50,7 +50,7 @@ class AdminPanelProvider extends PanelProvider
 
             ])->renderHook(
                 PanelsRenderHook::BODY_END,
-                fn (): string => Blade::render("@vite('resources/js/agent.jsx')"),
+                fn (): string => Blade::render("@viteReactRefresh @vite('resources/js/agent.jsx')"),
             )
             ->middleware([
                     EncryptCookies::class,
