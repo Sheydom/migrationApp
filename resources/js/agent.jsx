@@ -20,3 +20,10 @@ mountWidget();
 // DOM observer whenever livewire/laravel/filament manipulates dom mount react widhtet again
 const observer = new MutationObserver(() => mountWidget());
 observer.observe(document.body, { childList: true, subtree: true });
+
+window.addEventListener("livewire:navigated",()=>{
+    console.log('navigated');
+    requestAnimationFrame(()=>{
+        mountWidget();
+    })
+})

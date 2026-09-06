@@ -11,14 +11,14 @@ class AgentController extends Controller
     {
         $message = $request->input('message');
         $response = Http::post('http://127.0.0.1:11434/api/chat', [
-            'model' => 'qwen2.5:1.5b',
+            'model' => 'qwen2.5:7b',
             'think'=> false,
             'stream'=>false,
 
             'messages' => [
                 [
                     'role'=>'system',
-                    'content'=>'You are a AI assistant for a migration case management application'
+                    'content'=>'You are a AI assistant for a Australian migration case management application'
                 ],
                 [
                     'role' => 'user',
