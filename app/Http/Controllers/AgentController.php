@@ -12,7 +12,7 @@ class AgentController extends Controller
     public function chat(Request $request)
     {
         $clientData = Client::all();
-        $clientChecklist = ChecklistItem::all();
+       
 
         $message = $request->input('message');
         $response = Http::post('http://127.0.0.1:11434/api/chat', [
@@ -27,7 +27,7 @@ class AgentController extends Controller
                 ],
                 [
                     'role' => 'user',
-                    'content' =>'Client data:\n' . $clientData->toJson() . $clientChecklist->toJson() . '\n\nUser question:\n' . $message,
+                    'content' =>'Client data:\n' . $clientData->toJson() . '\n\nUser question:\n' . $message,
                 ]
             ],
 
