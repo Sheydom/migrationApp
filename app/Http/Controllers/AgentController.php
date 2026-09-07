@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use App\Models\Client;
+use App\Models\ChecklistItem;
 
 class AgentController extends Controller
 {
     public function chat(Request $request)
     {
+        $clientData = Client::all();
+        $clientChecklist = ChecklistItem::all();
+
         $message = $request->input('message');
         $response = Http::post('http://127.0.0.1:11434/api/chat', [
             'model' => 'qwen2.5:7b',
@@ -22,7 +27,7 @@ class AgentController extends Controller
                 ],
                 [
                     'role' => 'user',
-                    'content' => $message,
+                    'content' =>'Client data:\n' . $clientData->toJson() . $clientChecklist->toJson() . '\n\nUser question:\n' . $message,
                 ]
             ],
 
