@@ -43,6 +43,7 @@ export default function MigrationAgent() {
                 </div>
                 <div className="flex flex-1">
                     <textarea
+                    readOnly
                         name=""
                         id=""
                         value={data??""}
