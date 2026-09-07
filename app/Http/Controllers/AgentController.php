@@ -16,7 +16,7 @@ class AgentController extends Controller
 
         $message = $request->input('message');
         $response = Http::post('http://127.0.0.1:11434/api/chat', [
-            'model' => 'qwen2.5:7b',
+            'model' => 'qwen2.5:3b',
             'think'=> false,
             'stream'=>false,
 
