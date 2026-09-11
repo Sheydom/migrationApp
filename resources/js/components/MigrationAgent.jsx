@@ -6,8 +6,8 @@ export default function MigrationAgent() {
 
     async function handleSubmit(e) {
         e.preventDefault();
-         if (!message.trim()) {
-             return;
+        if (!message.trim()) {
+            return;
         }
 
         try {
@@ -36,36 +36,44 @@ export default function MigrationAgent() {
     }
 
     return (
-        <div className="flex h-full min-h-100  flex-col border border-white rounded-xl shadow-lg   ">
-           
-                <div className="border-b font-semibold text-2xl p-2.5">
-                    <h1 className="text-green-400">Migration AI Agent!</h1>
+        <div className="flex h-full min-h-100  flex-col rounded-xl shadow-lg ">
+            <div className="flex flex-col flex-1">
+                <div className=" pb-2.5 font-semibold text-2xl">
+                    <h1 className="text-green-400">Migration AI!</h1>
                 </div>
-                <div className="flex flex-1">
-                    <textarea
+                <textarea
                     readOnly
-                        name=""
-                        id=""
-                        value={data??""}
-                        className="w-full resize-none flex-1 flex p-2.5 outline-none"
-                    ></textarea>
-                </div>
-            
-            <form onSubmit={handleSubmit} className="p-2.5">
+                    name=""
+                    id=""
+                    value={data ?? ""}
+                    className="w-full resize-none flex-1 flex p-2.5 outline-none bg-black rounded-2xl mb-5"
+                ></textarea>
+            </div>
+
+            <form onSubmit={handleSubmit} className="flex flex-col">
                 <div>
                     <input
                         type="text"
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Ask something..."
-                        className="w-full p-2.5 border-gray-300 border rounded-2xl mb-5"
-
+                        className="w-full p-2.5 border-gray-300/30 border rounded-2xl mb-5  hover:border-[#51A2FF]  outline-none active:outline-[#51A2FF] duration-300 ease-in-out"
                     />
                     <div className="flex gap-5">
-                        <button disabled={loading} type="submit">
+                        <button
+                            disabled={loading}
+                            type="submit"
+                            className="border-[#FE9900]/30 hover:border-[#FE9900] border rounded-2xl p-2.5 duration-300 ease-in-out"
+                        >
                             {loading ? "thinking..." : "Send"}
                         </button>
-                        <button type="button" onClick={()=>setMessage("")}>Clear</button>
+                        <button
+                            type="button"
+                            onClick={() => setMessage("")}
+                            className="border-[#FE9900]/30 hover:border-[#FE9900] border rounded-2xl p-2.5 duration-300 ease-in-out"
+                        >
+                            Clear
+                        </button>
                     </div>
                 </div>
             </form>
