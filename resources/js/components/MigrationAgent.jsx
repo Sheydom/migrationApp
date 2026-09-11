@@ -4,6 +4,11 @@ export default function MigrationAgent() {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState("");
 
+    const handleClear = () => {
+        setData("");
+        setMessage("");
+    };
+
     async function handleSubmit(e) {
         e.preventDefault();
         if (!message.trim()) {
@@ -63,14 +68,14 @@ export default function MigrationAgent() {
                         <button
                             disabled={loading}
                             type="submit"
-                            className="border-[#FE9900]/30 hover:border-[#FE9900] border rounded-2xl p-2.5 duration-300 ease-in-out"
+                            className="border-[#FE9900]/30 hover:border-[#FE9900] hover:scale-115 hover:text-black hover:bg-[#FE9900] border rounded-2xl p-2.5 duration-300 ease-in-out"
                         >
                             {loading ? "thinking..." : "Send"}
                         </button>
                         <button
                             type="button"
-                            onClick={() => setMessage("")}
-                            className="border-[#FE9900]/30 hover:border-[#FE9900] border rounded-2xl p-2.5 duration-300 ease-in-out"
+                            onClick={handleClear}
+                            className="border-[#FE9900]/30 hover:border-[#FE9900] hover:scale-115 hover:text-black hover:bg-[#FE9900] border rounded-2xl p-2.5 duration-300 ease-in-out"
                         >
                             Clear
                         </button>
