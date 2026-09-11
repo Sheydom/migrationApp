@@ -57,7 +57,7 @@ export default function MigrationAgent() {
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
                         placeholder="Ask something..."
-                        className="w-full p-2.5 border-gray-300/30 border rounded-2xl mb-5  hover:border-[#51A2FF]  outline-none active:outline-[#51A2FF] duration-300 ease-in-out"
+                        className={`w-full p-2.5 border-gray-300/30 border rounded-2xl mb-5 hover:border-[#51A2FF] duration-300 ease-in-out focus:outline-1 focus:outline-[#51A2FF] `}
                     />
                     <div className="flex gap-5">
                         <button
