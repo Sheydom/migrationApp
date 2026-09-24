@@ -39,3 +39,7 @@ app/Python/output/
 
 # macOS
 app/Python/.DS_Store
+
+**/caddy
+frankenphp
+frankenphp-worker.php

@@ -34,7 +34,7 @@ export default function MigrationAgent() {
             console.log(data.message);
         } catch (error) {
             console.error(error);
-            setReply("Something went wrong.");
+            setData(`Something went wrong sorry. ${error.message}`);
         } finally {
             setLoading(false);
         }
