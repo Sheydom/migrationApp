@@ -41,7 +41,7 @@ export default function MigrationAgent() {
     }
 
     return (
-        <div className="flex h-full min-h-100  flex-col rounded-xl shadow-lg ">
+        <div className="flex h-full min-h-100  flex-col rounded-xl shadow-lg">
             <div className="flex flex-col flex-1">
                 <div className=" pb-2.5 font-semibold text-2xl">
                     <h1 className="text-green-400">Migration AI!</h1>

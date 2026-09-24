@@ -42,9 +42,9 @@ results = ocr.predict(str(image_path))
 
 
 #  saving processed images on output folder no indentation! except forloop
-# base = Path(__file__).resolve().parent
-# for result in results:
-#     result.save_to_img(f"{base}/output")
+base = Path(__file__).resolve().parent
+for result in results:
+    result.save_to_img(f"{base}/output")
 
 
 # for result in results:

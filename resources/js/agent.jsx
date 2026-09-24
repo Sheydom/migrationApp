@@ -6,6 +6,7 @@ console.log("agent.jsx loading");
 
 function mountWidget() {
     const element = document.getElementById("migration-agent");
+    console.log("mounting react before if");
     if (element && !element.dataset.mounted) {
         console.log("mounting react");
         element.dataset.mounted = "true";
@@ -13,7 +14,7 @@ function mountWidget() {
         root.render(<MigrationAgent />);
     }
 }
-
+//&& !element.dataset.mounted , add to element if condition
 
 mountWidget();
 
