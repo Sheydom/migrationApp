@@ -94,6 +94,7 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /var/www/html
 COPY --from=php-build /var/www/html /var/www/html
+COPY --from=frontend-build /var/www/html/public/build /var/www/html/public/build
 # Copy Python 3.12.13 runtime
 
 COPY --from=python-runtime /usr/local /usr/local
@@ -118,6 +119,7 @@ FROM caddy:latest AS web
 COPY ./docker/caddy/Caddyfile /etc/caddy/Caddyfile
 
 COPY --from=frontend-build /var/www/html/public /var/www/html/public
+
 
 # Laravel + vendor
 COPY --from=php-build /var/www/html /var/www/html
