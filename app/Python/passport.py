@@ -67,9 +67,9 @@ if image_path.exists():
 
 start = time.perf_counter()
 #for production
-# client = Client(host="http://ollama:11434")
+client = Client(host="http://ollama:11434")
 # response = client.chat(
-response = chat(
+response = client.chat(
     model="qwen2.5:1.5b",
 
     messages=[

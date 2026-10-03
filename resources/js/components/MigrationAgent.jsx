@@ -9,36 +9,108 @@ export default function MigrationAgent() {
         setMessage("");
     };
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        if (!message.trim()) {
-            return;
-        }
+     async function handleSubmit(e) {
+         e.preventDefault();
+         if (!message.trim()) {
+             return;
+         }
+         try {
+             setLoading(true);
+             const res = await fetch("api/agent/chat", {
+                 method: "POST",
+                 headers: {
+                     "Content-Type": "application/json",
+                     Accept: "application/json",
+                 },
+                 body: JSON.stringify({ message: message }),
+             });
+             if (!res.ok) {
+                 throw new Error("Something went wrong while sending.");
+             }
+             console.log("success");
+             const data = await res.json();
+             setData(data.message);
+             console.log(data.message);
+         } catch (error) {
+             console.error(error);
+             setData(`Something went wrong sorry. ${error.message}`);
+         } finally {
+             setLoading(false);
+         }
+     }
+//     async function handleSubmit(e) {
+//     e.preventDefault();
 
-        try {
-            setLoading(true);
-            const res = await fetch("api/agent/chat", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body: JSON.stringify({ message: message }),
-            });
-            if (!res.ok) {
-                throw new Error("Something went wrong while sending.");
-            }
-            console.log("success");
-            const data = await res.json();
-            setData(data.message);
-            console.log(data.message);
-        } catch (error) {
-            console.error(error);
-            setData(`Something went wrong sorry. ${error.message}`);
-        } finally {
-            setLoading(false);
-        }
-    }
+//     if (!message.trim()) {
+//         return;
+//     }
+
+//     try {
+//         setLoading(true);
+//         setData("");
+
+//         const res = await fetch("api/agent/chat", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 Accept: "application/x-ndjson",
+//             },
+//             body: JSON.stringify({ message: message }),
+//         });
+
+//         if (!res.ok) {
+//             throw new Error("Something went wrong while sending.");
+//         }
+
+//         if (!res.body) {
+//             throw new Error("Streaming response not available.");
+//         }
+
+//         const reader = res.body.getReader();
+//         const decoder = new TextDecoder();
+
+//         let buffer = "";
+
+//         while (true) {
+//             const { value, done } = await reader.read();
+
+//             if (done) {
+//                 break;
+//             }
+
+//             buffer += decoder.decode(value, { stream: true });
+
+//             const lines = buffer.split("\n");
+
+//             // Keep an incomplete JSON line for the next chunk
+//             buffer = lines.pop() ?? "";
+
+//             for (const line of lines) {
+//                 if (!line.trim()) {
+//                     continue;
+//                 }
+
+//                 const chunk = JSON.parse(line);
+
+//                 if (chunk.error) {
+//                     throw new Error(chunk.error);
+//                 }
+
+//                 const content = chunk.message?.content ?? "";
+
+//                 if (content) {
+//                     setData((current) => current + content);
+//                 }
+//             }
+//         }
+
+//     } catch (error) {
+//         console.error(error);
+//         setData(`Something went wrong sorry. ${error.message}`);
+//     } finally {
+//         setLoading(false);
+//     }
+// }
 
     return (
         <div className="flex h-full min-h-100  flex-col rounded-xl shadow-lg">

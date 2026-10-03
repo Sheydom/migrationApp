@@ -1,8 +1,8 @@
 # -------------------------
 # Stage 1: PHP / Composer
 # -------------------------
-FROM php:8.5-fpm AS php-build
-
+# FROM php:8.5-fpm AS php-build
+FROM dunglas/frankenphp:php8.5 AS php-build
 RUN apt-get update && apt-get install -y \
     poppler-utils \
     libgl1 \
@@ -74,7 +74,8 @@ RUN pip install --upgrade pip \
 # -------------------------
 # Stage 3: Final app image
 # -------------------------
-FROM php:8.5-fpm AS app
+# FROM php:8.5-fpm AS app
+FROM dunglas/frankenphp:php8.5 AS app
 
 RUN apt-get update && apt-get install -y \
     poppler-utils \
