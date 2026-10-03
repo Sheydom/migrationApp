@@ -66,9 +66,10 @@ if image_path.exists():
 # print(ocr_text)
 start = time.perf_counter()
 # comment out client and chance to only chat(nodel ecetera) below for local
+#for producition
 client = Client(host="http://ollama:11434")
+# response = client.chat(
 response = client.chat(
-
     model="qwen2.5:1.5b",
 
     messages=[
@@ -130,11 +131,11 @@ content_data = json.loads(content)
 print(json.dumps(content_data))
 
 #  important json file for debugging
-# base_dir = Path(__file__).resolve().parent
-# output_file = base_dir / "passport_data.json"
+base_dir = Path(__file__).resolve().parent
+output_file = base_dir / "passport_data.json"
 #
-# with open(output_file, "w") as f:
-#      json.dump(content_data, f, indent=2)
+with open(output_file, "w") as f:
+     json.dump(content_data, f, indent=2)
 
 # print(f"json data successfull created '{response_type}'")
 # print(f"Qwen: {time.perf_counter() - start:.2f}s")

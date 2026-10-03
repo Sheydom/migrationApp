@@ -7,6 +7,7 @@ use Filament\Notifications\Notification;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Illuminate\Support\Facades\URL;
 
+
 class Dashboard extends BaseDashboard
 {
     protected function getHeaderActions(): array
@@ -22,7 +23,7 @@ class Dashboard extends BaseDashboard
                         now()->addWeek(),
                         absolute: false,
                     );
-                    $url = rtrim(config('app.url'),'/') . $relativeUrl;
+                    $url = rtrim(config('app.url'), '/') . $relativeUrl;
 
                     Notification::make()
                         ->title('Registration link generated')
@@ -35,6 +36,7 @@ class Dashboard extends BaseDashboard
                         ->success()
                         ->persistent()
                         ->send();
+
                 }),
         ];
     }

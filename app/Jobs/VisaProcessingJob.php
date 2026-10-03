@@ -32,7 +32,13 @@ class VisaProcessingJob implements ShouldQueue
             $script = base_path("app/Python/visa.py");
 //            only for local
 //            $python = base_path("app/Python/.venv/bin/python");
+
             $python = app()->environment('production') ? '/opt/venv/bin/python' : base_path("app/Python/.venv/bin/python");
+            Log::info('Passport Python command', [
+                'python' => $python,
+                'script' => $script,
+                'file' => $this->fullPathVisa,
+            ]);
             $result = Process::timeout(120)->run([$python, $script, $this->fullPathVisa]);
 
 

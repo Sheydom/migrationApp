@@ -30,6 +30,8 @@ new class extends Component {
     public $passport;
     public $current_visa;
     public $other_documents;
+    public bool $passportUploadError = false;
+    public bool $currentVisaUploadError = false;
 
     public function mount(): void
     {
@@ -45,6 +47,11 @@ new class extends Component {
             'current_visa.max'=>'The file must not be larger than 20MB.'
         ]);
 
+        $this->validateOnly('current_visa', ['current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',], [
+            'current_visa.max' => 'The file must not be larger than 20 MB.'
+        ]);
+
+
         Log::info('Current visa property updated', [
 
             'has_file' => (bool)$this->current_visa,
@@ -58,11 +65,9 @@ new class extends Component {
     public function updatedPassport(): void
 
     {
-
-        $this->validateOnly('passport',['passport'=>'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',],[
-            'passport.max'=>'The file must not be larger than 20MB.'
+        $this->validateOnly('passport', ['passport' => 'nullable|file|mimes:pdf,JPG,jpeg,png|max:20480',], [
+            'passport.max' => 'The file must not be larger than 20 MB.',
         ]);
-
         Log::info('Passport property updated', [
 
             'has_file' => (bool)$this->passport,
@@ -87,7 +92,7 @@ new class extends Component {
             'email' => 'required|email|unique:clients,email|confirmed',
             'phone' => 'required|string|max:30',
 //            'nationality' => 'required|string|max:50',
-            'passport' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
+            'passport' => 'nullable|file|mimes:pdf,jpg,jpeg,JPG,png|max:20480',
             'current_visa' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:20480',
             'other_documents' => 'nullable|array',
             'other_documents.*' => 'file|mimes:pdf,jpg,jpeg,png,doc,docx|max:20480',
@@ -295,22 +300,24 @@ new class extends Component {
                 </div>
                 <div></div>
                 <div class="flex flex-col cursor-pointer"><label class="cursor-pointer" for="passport">Passport</label>
-                    <input type="file" id="passport" wire:model="passport" accept=".pdf,.jpg,.jpeg,.png"
-                           class="inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg cursor-pointer hover:bg-cyan-800 transition">
+                    <input type="file" id="passport" wire:model="passport" accept=".pdf,.jpg,.jpeg,.JPG,.png"
+                           class="inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg cursor-pointer hover:bg-cyan-800 transition"
+                    >
 
-                    @error('passport') <p class="text-red-500 text-sm">{{$message}}</p> @enderror</div>
-                <div class="flex flex-col cursor-pointer "><label class="cursor-pointer" for="currentVisa">Current
+                    @error('passport') <p class="text-sm text-red-600">{{$message}}</p> @enderror</div>
+                <div class="flex flex-col  cursor-pointer"><label class="cursor-pointer"
+                                                                  for="currentVisa">Current
                         Visa</label>
                     <input type="file" id="currentVisa" wire:model="current_visa"
                            accept=".pdf,.jpg,.jpeg,.png"
                            class=" inline-flex items-center px-4 py-2 bg-cyan-700 text-white rounded-lg
                            cursor-pointer hover:bg-cyan-800 transition">
 
-                    @error('current_visa') <p class="text-red-500 text-sm">{{$message}}</p> @enderror</div>
+                    @error('current_visa') <p class="text-sm text-red-600">{{$message}}</p> @enderror</div>
 
             </div>
 
-
+            <p>Max. File size 20MB</p>
             <div class="bg-cyan-50 border border-cyan-200 rounded-lg p-5">
                 <h3 class="font-semibold text-cyan-800">
                     Privacy Notice
@@ -331,9 +338,10 @@ new class extends Component {
                     @endif
                 </div>
                 <button
-                @disabled($errors->has('current_visa')||$errors->has('passport'))
+                    @disabled($errors->has('current_visa')||$errors->has('passport'))
                     type="submit"
-                    class="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold px-8 py-3 rounded-lg shadow transition {{$errors->has('current_visa')||$errors->has('passport')? 'opacity-30 cursor-not-allowed':''}}">
+                    wire:loading.class="opacity-50 pointer-events-none"
+                    class="bg-cyan-700 hover:bg-cyan-800 text-white font-semibold px-8 py-3 rounded-lg shadow transition {{$errors->has('current_visa')||$errors->has('passport')? 'opacity-30  cursor-not-allowed':''}}">
 
                     <span wire:loading.remove>
                         Submit Application

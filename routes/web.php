@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AgentController;
 
 Route::redirect('/', '/admin');
 
@@ -24,6 +25,7 @@ Route::get('/debug-request', function () {
         'remote_addr' => request()->server('REMOTE_ADDR'),
     ];
 });
+
 
 
 //Route::middleware(['auth', 'verified'])->group(function () {

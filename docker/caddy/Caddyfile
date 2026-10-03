@@ -1,13 +1,12 @@
 :80 {
     root * /var/www/html/public
 
-    php_fastcgi app:9000 {
-        env HTTPS on
+    reverse_proxy app:8000 {
         env HTTP_X_FORWARDED_PROTO https
-        env HTTP_X_FORWARDED_HOST {http.request.host}
+        env HTTP_X_FORWARDED_HOST {host}
     }
 
-    file_server
+    
     log {
         output stdout
         format console
