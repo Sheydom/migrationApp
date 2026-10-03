@@ -13,7 +13,7 @@
          try {
              $message = $request->input('message');
              $response = Http::timeout(120)->post('http://ollama:11434/api/chat', [
-                 'model' => 'qwen2.5:7b',
+                 'model' => 'qwen2.5:3b',
                  'think' => false,
                  'stream' => false,
                  'messages' => [
