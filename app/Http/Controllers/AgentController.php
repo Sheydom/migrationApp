@@ -12,7 +12,7 @@
          $clientData = Client::all();
          try {
              $message = $request->input('message');
-             $response = Http::timeout(120)->post('http://127.0.0.1:11434/api/chat', [
+             $response = Http::timeout(120)->post('http://ollama:11434/api/chat', [
                  'model' => 'qwen2.5:7b',
                  'think' => false,
                  'stream' => false,
