@@ -85,6 +85,7 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libicu-dev \
     && docker-php-ext-install \
+        pcntl \
         pdo_mysql \
         zip \
         intl \
