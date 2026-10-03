@@ -4,6 +4,7 @@
 # FROM php:8.5-fpm AS php-build
 FROM dunglas/frankenphp:php8.5 AS php-build
 RUN apt-get update && apt-get install -y \
+    pcntl \
     poppler-utils \
     libgl1 \
     libglib2.0-0 \
