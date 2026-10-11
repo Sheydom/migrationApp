@@ -169,20 +169,18 @@ response_type = type(response)
 # print(response_type)
 content = response.message.content
 content_data = json.loads(content)
-content = response.message.content
-content_data = json.loads(content)
 
 # Fix bilingual passport dates such as 10 MAR/MAR 2035
 for field in ["birth_date", "issue_date", "expire_date"]:
     date = content_data.get(field)
 
-if isinstance(date, str):
-    content_data[field] = re.sub(
-        r"\b([A-Z]{3})/\1\b",
-        r"\1",
-        date,
-        flags=re.IGNORECASE
-    )
+    if isinstance(date, str):
+        content_data[field] = re.sub(
+            r"\b([A-Z]{3})/\1\b",
+            r"\1",
+            date,
+            flags=re.IGNORECASE
+        )
 
 # Return corrected JSON to Laravel
 print(json.dumps(content_data))
