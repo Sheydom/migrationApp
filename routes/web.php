@@ -1,13 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AgentController;
+use Symfony\Component\HttpFoundation\Request;
 
 Route::redirect('/', '/admin');
 
-
 Route::livewire('/register', 'pages.client-register')->name('client-register')->middleware('signed:relative');
-
 
 Route::get('/debug-request', function () {
     return [
@@ -23,13 +21,13 @@ Route::get('/debug-request', function () {
         'server_forwarded_proto' => request()->server('HTTP_X_FORWARDED_PROTO'),
         'server_forwarded_host' => request()->server('HTTP_X_FORWARDED_HOST'),
         'remote_addr' => request()->server('REMOTE_ADDR'),
+        'trusted_proxies' => Request::getTrustedProxies(),
+        'trusted_headers' => Request::getTrustedHeaderSet(),
     ];
 });
 
-
-
-//Route::middleware(['auth', 'verified'])->group(function () {
+// Route::middleware(['auth', 'verified'])->group(function () {
 //    Route::view('dashboard', 'dashboard')->name('dashboard');
-//});
+// });
 //
-//require __DIR__ . '/settings.php';
+// require __DIR__ . '/settings.php';
