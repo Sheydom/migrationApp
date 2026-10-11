@@ -80,21 +80,95 @@ response = client.chat(
 
             "content": f"""
 
-Extract visa name.
+You are an information extraction assistant for Australian immigration documents.
 
-Rules:
+Extract the Australian visa type and subclass from the OCR text.
 
-- Never invent information.
+RULES:
 
-- Never guess.
+- Extract information ONLY from the provided OCR text.
 
-- If a value cannot be found, return null.
+- Never invent, assume, or guess information.
 
-- Return and respond ONLY valid JSON.
+- Return ONLY valid JSON.
 
-- No explanation.
+- Do not include explanations or markdown.
 
-Fields:
+- Use exactly the JSON key specified below.
+
+- If no visa type or subclass can be identified, return null.
+
+- Do not confuse a visa application number, grant number, or passport number with a visa subclass.
+
+- Do not extract visa types mentioned only as historical visas or unrelated references.
+
+- Prefer the visa identified as granted or currently held in the document.
+
+VISA FORMATTING:
+
+- If both visa name and subclass are available, return:
+
+  "Visa Name (subclass XXX)"
+
+- If only the subclass is available, return:
+
+  "Subclass XXX"
+
+- If only the visa name is available, return the visa name exactly as written.
+
+- Do not invent a visa name from a subclass number.
+
+- Preserve the official visa name when available.
+
+EXAMPLES:
+
+Input:
+
+Visa: Temporary Skill Shortage
+
+Visa subclass: 482
+
+Output:
+
+{{"current_visa": "Temporary Skill Shortage (subclass 482)"}}
+
+Input:
+
+Visa: Student
+
+Visa subclass: 500
+
+Output:
+
+{{"current_visa": "Student (subclass 500)"}}
+
+Input:
+
+Visa: Skilled Independent
+
+Visa subclass: 189
+
+Output:
+
+{{"current_visa": "Skilled Independent (subclass 189)"}}
+
+Input:
+
+Visa subclass: 600
+
+Output:
+
+{{"current_visa": "Subclass 600"}}
+
+Input:
+
+No visa information available
+
+Output:
+
+{{"current_visa": null}}
+
+Return JSON containing exactly this field:
 
 - current_visa
 
