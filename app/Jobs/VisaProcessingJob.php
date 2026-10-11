@@ -28,7 +28,7 @@ class VisaProcessingJob implements ShouldQueue
     public function handle(): void
     {
         try {
-            set_time_limit(120);
+            set_time_limit(180);
             $script = base_path("app/Python/visa.py");
 //            only for local
 //            $python = base_path("app/Python/.venv/bin/python");
@@ -39,7 +39,7 @@ class VisaProcessingJob implements ShouldQueue
                 'script' => $script,
                 'file' => $this->fullPathVisa,
             ]);
-            $result = Process::timeout(120)->run([$python, $script, $this->fullPathVisa]);
+            $result = Process::timeout(180)->run([$python, $script, $this->fullPathVisa]);
 
 
             if ($result->failed()) {
