@@ -70,7 +70,7 @@ start = time.perf_counter()
 client = Client(host="http://ollama:11434")
 # response = client.chat(
 response = client.chat(
-    model="qwen2.5:1.5b",
+    model="qwen2.5:3b",
 
     messages=[
 
