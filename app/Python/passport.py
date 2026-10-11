@@ -90,9 +90,33 @@ Rules:
 
 - If a value cannot be found, return null.
 
-- Return and respond ONLY valid JSON.
+- Return ONLY valid JSON.
 
 - No explanation.
+
+DATE FORMATTING:
+
+- Convert ALL dates to YYYY-MM-DD.
+
+- Dates may contain English and Spanish month abbreviations.
+
+- Some passports contain bilingual months, such as MAR/MAR or DEC/DIC.
+
+- For bilingual months, identify the month and convert it to its numeric value.
+
+- Examples:
+
+  10 MAR/MAR 2035 -> 2035-03-10
+
+  15 JUN/JUN 1995 -> 1995-06-15
+
+  20 DEC/DIC 2029 -> 2029-12-20
+
+  05 APR/ABR 2030 -> 2030-04-05
+
+- Never guess an ambiguous date.
+
+- If a date cannot be reliably converted, return null.
 
 Fields:
 
