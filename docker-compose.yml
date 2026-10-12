@@ -38,6 +38,8 @@ services:
                 condition: service_healthy
         env_file:
             - .env
+        healthcheck:
+            disable: true    
         volumes:
             - migration-storage:/var/www/html/storage/app    
         environment:
@@ -58,6 +60,8 @@ services:
                 condition: service_healthy
         env_file:
             - .env
+        healthcheck:
+            disable: true    
         volumes:
             - migration-storage:/var/www/html/storage/app    
         environment:
