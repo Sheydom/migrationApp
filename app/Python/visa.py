@@ -6,6 +6,7 @@ import time
 from pathlib import Path
 import sys
 from ollama import Client
+from PIL import Image
 
 
 

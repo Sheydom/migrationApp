@@ -7,23 +7,33 @@ from pathlib import Path
 import sys
 from ollama import Client
 import re
+from PIL import Image
 
 
 
 passport_path = Path(sys.argv[1])
+extension = Path(passport_path).suffix.lower()
 
 total = time.perf_counter()
 start = time.perf_counter()
-pages = convert_from_path(
+if extension == '.pdf':
+    pages = convert_from_path(
         passport_path,
     dpi=300
 )
+    image = pages[0].convert("RGB")
+elif extension in ['.jpg','.JPG','png']:
+    image = Image.open(passport_path).convert('RGB')
+
+else:
+    raise ValueError("f:Unsupported file format: {extension}")
 
 # print(f"PDF conversion: {time.perf_counter() - start:.2f}s")
 
 start = time.perf_counter()
 image_path = passport_path.with_suffix(".png")
-pages[0].save(str(image_path), "PNG")
+image.save(str(image_path), "PNG")
+
 # print(f"Save PNG: {time.perf_counter() - start:.2f}s")
 
 
