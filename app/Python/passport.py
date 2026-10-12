@@ -22,7 +22,7 @@ if extension == '.pdf':
     dpi=300
 )
     image = pages[0].convert("RGB")
-elif extension in ['.jpg','.jpeg','png']:
+elif extension in ['.jpg','.jpeg','.png']:
     image = Image.open(passport_path).convert('RGB')
 
 else:
