@@ -11,19 +11,26 @@ from PIL import Image
 
 
 visa_path = Path(sys.argv[1])
+extension = Path(visa_path).suffix.lower()
 
 total = time.perf_counter()
 start = time.perf_counter()
-pages = convert_from_path(
-        visa_path,
-    dpi=300
-)
+if extension == '.pdf':
+    pages = convert_from_path(
+            visa_path,
+        dpi=300
+    )
+    image = pages[0].convert('RGB')
+elif extension in ['.jpg','.jpeg','png']:
+    image = Image.open(visa_path).convert('RGB')    
+else:
+    raise ValueError(f"Unsupported file format:{extension}")    
 
 # print(f"PDF conversion: {time.perf_counter() - start:.2f}s")
 
 start = time.perf_counter()
-image_path = visa_path.with_suffix(".png")
-pages[0].save(str(image_path), "PNG")
+image_path= visa_path.with_name(visa_path.stem+'_ocr.png')
+image.save(str(image_path), "PNG")
 # print(f"Save PNG: {time.perf_counter() - start:.2f}s")
 
 

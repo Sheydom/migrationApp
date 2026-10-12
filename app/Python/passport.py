@@ -22,16 +22,16 @@ if extension == '.pdf':
     dpi=300
 )
     image = pages[0].convert("RGB")
-elif extension in ['.jpg','.JPG','png']:
+elif extension in ['.jpg','.jpeg','png']:
     image = Image.open(passport_path).convert('RGB')
 
 else:
-    raise ValueError("f:Unsupported file format: {extension}")
+    raise ValueError(f"Unsupported file format: {extension}")
 
 # print(f"PDF conversion: {time.perf_counter() - start:.2f}s")
 
 start = time.perf_counter()
-image_path = passport_path.with_suffix(".png")
+image_path = passport_path.with_name(passport_path.stem+"_ocr.png")
 image.save(str(image_path), "PNG")
 
 # print(f"Save PNG: {time.perf_counter() - start:.2f}s")
