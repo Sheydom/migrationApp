@@ -131,9 +131,10 @@ new class extends Component {
 
         //for PassportProcessing job we keep one local file temporary
         if ($this->current_visa) {
+            $extension = $this->current_visa->extension();
             $localPathVisa = $this->current_visa->storeAs(
                 'temp',
-                "visa-{$client->id}.pdf"
+                "visa-{$client->id}.{$extension}"
             );
 
             $fullPathVisa = storage_path("app/private/{$localPathVisa}");
@@ -145,9 +146,10 @@ new class extends Component {
         }
 
         if ($this->passport) {
+            $extension = $this->passport->extension();
             $localPathPassport = $this->passport->storeAs(
                 'temp',
-                "passport-{$client->id}.pdf"
+                "passport-{$client->id}.{$extension}"
             );
 
             $fullPathPassport = storage_path("app/private/{$localPathPassport}");
