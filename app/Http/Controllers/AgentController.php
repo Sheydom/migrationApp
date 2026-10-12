@@ -8,11 +8,11 @@
  {
      public function chat(Request $request)
      {
-         set_time_limit(120);
+         set_time_limit(180);
          $clientData = Client::all();
          try {
              $message = $request->input('message');
-             $response = Http::timeout(120)->post('http://ollama:11434/api/chat', [
+             $response = Http::timeout(180)->post('http://ollama:11434/api/chat', [
                  'model' => 'qwen2.5:1.5b',
                  'think' => false,
                  'stream' => false,
