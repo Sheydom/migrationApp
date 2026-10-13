@@ -51,17 +51,17 @@ class AgentController extends Controller
 
             'laravel_request_seconds' => round($laravelDuration, 2),
 
-            'ollama_total_seconds' => round(($data['total_duration'] ?? 0) / 1e9, 2),
+            'ollama_total_seconds' => round(($response['total_duration'] ?? 0) / 1e9, 2),
 
-            'model_load_seconds' => round(($data['load_duration'] ?? 0) / 1e9, 2),
+            'model_load_seconds' => round(($response['load_duration'] ?? 0) / 1e9, 2),
 
-            'prompt_processing_seconds' => round(($data['prompt_eval_duration'] ?? 0) / 1e9, 2),
+            'prompt_processing_seconds' => round(($response['prompt_eval_duration'] ?? 0) / 1e9, 2),
 
-            'generation_seconds' => round(($data['eval_duration'] ?? 0) / 1e9, 2),
+            'generation_seconds' => round(($response['eval_duration'] ?? 0) / 1e9, 2),
 
-            'input_tokens' => $data['prompt_eval_count'] ?? 0,
+            'input_tokens' => $response['prompt_eval_count'] ?? 0,
 
-            'output_tokens' => $data['eval_count'] ?? 0,
+            'output_tokens' => $response['eval_count'] ?? 0,
 
         ]);
 
