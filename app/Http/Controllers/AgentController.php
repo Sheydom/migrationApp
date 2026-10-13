@@ -18,7 +18,7 @@ class AgentController extends Controller
             $message = $request->input('message');
             $start = microtime(true);
             $response = Http::timeout(180)->post('http://ollama:11434/api/chat', [
-                'model' => 'qwen2.5:7b',
+                'model' => 'qwen2.5:3b',
                 'think' => false,
                 'stream' => false,
                 'keep_alive'=> -1,
