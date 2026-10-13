@@ -28,7 +28,8 @@ class AgentController extends Controller
                     ],
                     [
                         'role' => 'user',
-                        'content' => "Client data:\n".$clientData->toJson()."\n\nUser question:\n".$message,
+                        // 'content' => "Client data:\n".$clientData->toJson()."\n\nUser question:\n".$message,
+                        'content' => "User question:\n".$message,
                     ],
                 ],
             ]);
