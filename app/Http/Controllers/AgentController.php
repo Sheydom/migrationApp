@@ -32,6 +32,11 @@ class AgentController extends Controller
                     ],
                 ],
             ]);
+            \Log::info('Ollama HTTP Response', [
+                'status' => $response->status(),
+                'successful' => $response->successful(),
+                'body' => $response->body(),
+            ]);
             $laravelDuration = microtime(true) - $start;
         } catch (ConnectionException $e) {
             \Log::error('Ollama connection failed', ['error' => $e->getMessage()]);
