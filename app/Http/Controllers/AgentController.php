@@ -21,7 +21,7 @@ class AgentController extends Controller
                 'model' => 'qwen2.5:1.5b',
                 'think' => false,
                 'stream' => false,
-                'keep_alive'=> '30min',
+                'keep_alive'=> '30m',
                 'messages' => [
                     [
                         'role' => 'system',
