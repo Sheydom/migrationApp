@@ -103,6 +103,37 @@ services:
             - ollama-data:/root/.ollama
         networks:
             - migration
+            
+    ollama-preload:
+        image: curlimages/curl:latest
+        restart: "no"
+        depends_on:
+            ollama: 
+                condition: service_healthy
+        entrypoint: ["/bin/sh", "-c"]
+
+        command:
+
+        - |
+
+            echo "Preloading Qwen model..."
+
+            curl --fail --show-error \
+
+            --retry 10 \
+
+            --retry-delay 3 \
+
+            http://ollama:11434/api/generate \
+
+            -H "Content-Type: application/json" \
+
+            -d '{"model":"qwen2.5:1.5b","keep_alive":-1}'
+
+            echo "Model preloaded!"
+
+        networks:
+             - migration
 
 
     web:
