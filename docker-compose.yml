@@ -126,7 +126,7 @@ services:
 
                 echo "Preloading Qwen model..."
 
-                curl --fail --show-error --retry 10 --retry-delay 3 -X POST "http://ollama:11434/api/generate" -H "Content-Type: application/json" -d '{"model":"qwen2.5:3b","keep_alive":-1}'
+                curl --fail --show-error --retry 10 --retry-delay 3 -X POST "http://ollama:11434/api/generate" -H "Content-Type: application/json" -d '{"model":"qwen2.5:7b","keep_alive":-1}'
 
                 echo "Model preloaded successfully!"
 
