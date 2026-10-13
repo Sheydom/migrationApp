@@ -120,26 +120,18 @@ services:
 
         command:
 
-        - |
+            - |
 
-            echo "Preloading Qwen model..."
+                set -e
 
-            curl --fail --show-error \
+                echo "Preloading Qwen model..."
 
-            --retry 10 \
+                curl --fail --show-error --retry 10 --retry-delay 3 -X POST "http://ollama:11434/api/generate" -H "Content-Type: application/json" -d '{"model":"qwen2.5:1.5b","keep_alive":-1}'
 
-            --retry-delay 3 \
-
-            http://ollama:11434/api/generate \
-
-            -H "Content-Type: application/json" \
-
-            -d '{"model":"qwen2.5:1.5b","keep_alive":-1}'
-
-            echo "Model preloaded!"
+                echo "Model preloaded successfully!"
 
         networks:
-             - migration
+            - migration
 
 
     web:
