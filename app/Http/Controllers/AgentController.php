@@ -12,7 +12,8 @@ class AgentController extends Controller
     public function chat(Request $request)
     {
         set_time_limit(180);
-        $clientData = Client::all();
+        // $clientData = Client::all();
+        $clientData = Client::select('id','first_name','last_name','current_visa','expire_date','status')->get();
         try {
             $message = $request->input('message');
             $start = microtime(true);
@@ -20,6 +21,7 @@ class AgentController extends Controller
                 'model' => 'qwen2.5:1.5b',
                 'think' => false,
                 'stream' => false,
+                'keep_alive'=> '30min',
                 'messages' => [
                     [
                         'role' => 'system',
