@@ -1,45 +1,70 @@
 <?php
- namespace App\Http\Controllers;
- use App\Models\Client;
- use Illuminate\Http\Client\ConnectionException;
- use Illuminate\Http\Request;
- use Illuminate\Support\Facades\Http;
- class AgentController extends Controller
- {
-     public function chat(Request $request)
-     {
-         set_time_limit(180);
-         $clientData = Client::all();
-         try {
-             $message = $request->input('message');
-             $response = Http::timeout(180)->post('http://ollama:11434/api/chat', [
-                 'model' => 'qwen2.5:1.5b',
-                 'think' => false,
-                 'stream' => false,
-                 'messages' => [
-                     [
-                         'role' => 'system',
-                         'content' => 'You are a AI assistant for a Australian migration case management application. Answer based only on supplied database data.
+
+namespace App\Http\Controllers;
+
+use App\Models\Client;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
+class AgentController extends Controller
+{
+    public function chat(Request $request)
+    {
+        set_time_limit(180);
+        $clientData = Client::all();
+        try {
+            $message = $request->input('message');
+            $start = microtime(true);
+            $response = Http::timeout(180)->post('http://ollama:11434/api/chat', [
+                'model' => 'qwen2.5:1.5b',
+                'think' => false,
+                'stream' => false,
+                'messages' => [
+                    [
+                        'role' => 'system',
+                        'content' => 'You are a AI assistant for a Australian migration case management application. Answer based only on supplied database data.
                          Do not invent client information',
-                     ],
-                     [
-                         'role' => 'user',
-                         'content' => "Client data:\n".$clientData->toJson()."\n\nUser question:\n".$message,
-                     ],
-                 ],
-             ]);
-         } catch (ConnectionException $e) {
-             \Log::error('Ollama connection failed', ['error' => $e->getMessage()]);
-             return response()->json(['message' => 'The AI service timed out. Try a simpler question.'], 504);
-         } catch (\Throwable $e) {
-             \Log::error('Agent chat error', ['error' => $e->getMessage()]);
-             return response()->json(['message' => 'Something went wrong processing your request.'], 500);
-         }
-         return response()->json([
-             'message' => $response->json('message.content'),
-         ]);
-     }
- }
+                    ],
+                    [
+                        'role' => 'user',
+                        'content' => "Client data:\n".$clientData->toJson()."\n\nUser question:\n".$message,
+                    ],
+                ],
+            ]);
+            $laravelDuration = microtime(true) - $start;
+        } catch (ConnectionException $e) {
+            \Log::error('Ollama connection failed', ['error' => $e->getMessage()]);
+
+            return response()->json(['message' => 'The AI service timed out. Try a simpler question.'], 504);
+        } catch (\Throwable $e) {
+            \Log::error('Agent chat error', ['error' => $e->getMessage()]);
+
+            return response()->json(['message' => 'Something went wrong processing your request.'], 500);
+        }
+        \Log::info('Ollama Performance', [
+
+            'laravel_request_seconds' => round($laravelDuration, 2),
+
+            'ollama_total_seconds' => round(($data['total_duration'] ?? 0) / 1e9, 2),
+
+            'model_load_seconds' => round(($data['load_duration'] ?? 0) / 1e9, 2),
+
+            'prompt_processing_seconds' => round(($data['prompt_eval_duration'] ?? 0) / 1e9, 2),
+
+            'generation_seconds' => round(($data['eval_duration'] ?? 0) / 1e9, 2),
+
+            'input_tokens' => $data['prompt_eval_count'] ?? 0,
+
+            'output_tokens' => $data['eval_count'] ?? 0,
+
+        ]);
+
+        return response()->json([
+            'message' => $response->json('message.content'),
+        ]);
+    }
+}
 //  namespace App\Http\Controllers;
 //  use App\Models\Client;
 //  use Illuminate\Http\Request;
