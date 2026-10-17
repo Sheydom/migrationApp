@@ -31,12 +31,16 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->viteTheme('resources/css/filament/admin/theme.css')
-            ->login()
+            ->login() 
             ->sidebarCollapsibleOnDesktop()
             ->maxContentWidth(Width::Full)
             ->colors([
                 'primary' => Color::Amber,
-            ])
+            ])->renderHook(
+                PanelsRenderHook::AUTH_LOGIN_FORM_AFTER,
+                fn (): string => Blade::render('
+                <div><a href="{{route("demo-login")}}">Explore Demo</a></div>')
+            )
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\Filament\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\Filament\Pages')
             ->pages([

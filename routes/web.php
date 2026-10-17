@@ -7,6 +7,8 @@ Route::redirect('/', '/admin');
 
 Route::livewire('/register', 'pages.client-register')->name('client-register')->middleware('signed:relative');
 
+Route::livewire('/demo-login','pages.demo-login')->name('demo-login');
+
 Route::get('/debug-request', function () {
     return [
         'url' => request()->url(),
